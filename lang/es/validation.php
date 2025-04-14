@@ -250,7 +250,6 @@ return [
         'short_text'               => 'texto corto',
         'size'                     => 'tamaño',
         'skills'                   => 'habilidades',
-        'slug'                     => 'slug',
         'specialization'           => 'especialización',
         'started_at'               => 'comenzado el',
         'state'                    => 'estado',
