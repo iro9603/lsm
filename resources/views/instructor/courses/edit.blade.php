@@ -23,7 +23,7 @@
             </aside>
             <div class="col-span-1 lg:col-span-4">
                 <div class="card">
-                    <form action="{{ route('instructor.courses.update', $course) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('instructor.courses.update', $course) }}" id="formCourse" method="POST" enctype="multipart/form-data">
                     
                         @csrf
                         @method('PUT')
@@ -60,10 +60,13 @@
 
                         <div class="mb-4">
                             <x-label value="Descripción del curso" class="mb-1"/>
-                            <x-textarea 
+                           {{--  <x-textarea 
                             name="description" class="w-full">
                                 {{ old('description', $course->description) }}
-                            </x-textarea>
+                            </x-textarea> --}}
+                            <div id="editor"></div>
+                            <input type="hidden" id="quill-editor-area" name="description" value="{{ old('description', $course->description) }}"/>
+                            
                         </div>
 
                         <div class="grid md:grid-cols-3 gap-4 mb-8">
@@ -122,18 +125,20 @@
 
                             <div class="grid md:grid-cols-2 gap-4">
                                 <figure>
-                                    <img class="w-full aspect-video object-cover object-center" src="{{ $course->image }}" alt="">
+                                    <img id="imgPreview" class="w-full object-cover object-center" src="{{ asset($course->image) }}" alt="">
                                 </figure>
                                 <div>
+               
                                     <p class="mb-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor incidunt minus praesentium qui repellat maiores distinctio</p>
 
                                     <label>
                                         <span class="btn btn-blue md:hidden cursor-pointer">
-                                            Seleccionar una image
+                                            Seleccionar una imagen
                                         </span>
                                         <input class="hidden md:block" type="file" 
                                         accept="image/"
-                                        name="image">
+                                        name="image"
+                                        onChange="preview_image(event, '#imgPreview')">
                                     </label>
                                     
                                     <div class="flex md:justify-end mt-8">
@@ -153,12 +158,28 @@
 
     @push('js')
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-
         <script>
-        const quill = new Quill('#editor', {
-          theme: 'snow'
-        });
-      </script>
+            const editor = new Quill('#editor', {
+            theme: 'snow'
+            });
+            const quillEditor = document.getElementById('quill-editor-area');
+             // Set default value if it's not empty
+            const defaultValue = quillEditor.value.trim(); 
+            if (defaultValue) {
+                editor.clipboard.dangerouslyPasteHTML(defaultValue); 
+            }
+            // Sync Quill with the hidden input
+            editor.on('text-change', function() {
+                    quillEditor.value = editor.root.innerHTML;
+            });
+
+            quillEditor.addEventListener('input', function() {
+                editor.root.innerHTML = quillEditor.value;
+            });           
+
+    
+        </script>
+        
     @endpush
 
 </x-instructor-layout>

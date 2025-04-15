@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Level;
 use App\Models\Price;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
@@ -44,7 +45,7 @@ class CourseController extends Controller
         $data = $request->validate([
             'title' => 'required',
             'slug' => 'required|unique:courses',
-            'summary' => 'required',
+/*             'summary' => 'required', */
             'category_id' => 'required|exists:categories,id',
             'level_id' => 'required|exists:levels,id',
             'price_id' => 'required|exists:prices,id'
@@ -86,19 +87,31 @@ class CourseController extends Controller
     public function update(Request $request, Course $course)
     {
 
-        return $request->all();
 
-        /* return $request->validate([
+        $data= $request->validate([
             'title' => 'required|max:255',
             'slug' => 'required|max:255|unique:courses,slug,'.$course->id,
-            'summary' => 'required|max:1000',
-            'description' => 'required',
+            'summary' => 'nullable|max:1000',
+            'description' => 'nullable',
             'category_id' => 'required|exists:categories,id',
             'level_id' => 'required|exists:levels,id',
             'price_id' => 'required|exists:prices,id'
-        ]); */
+        ]);
 
-        
+        if($request->hasFile('image')){
+            if($course->image_path){
+                Storage::delete($course->image_path);
+            }
+
+            $data['image_path'] = Storage::put('courses/images', $request->file('image'));
+        }
+
+
+        $course->update($data);
+
+        session()->flash('flash.banner', "El curso de actualizó con éxito");
+
+        return redirect()->route('instructor.courses.edit', $course);
 
     }
 
