@@ -44,11 +44,7 @@ public function save(){
         } catch (\Exception $e) {
             session()->flash('error', 'Subir video ha fallado: ' . $e->getMessage());
         }
-        /* $this->validate();
-        dd($this->video);
-        $this->course->video_path = $this->video->store('courses/promotional-videos', 'public');
-
-        $this->course->save(); */
+    
     }
         
 

@@ -12,6 +12,12 @@
         'active' => request()->routeIs('instructor.courses.video')
     ],
 
+    [
+        'name' => 'Metas del curso',
+        'url' =>route('instructor.courses.goals', $course),
+        'active' => request()->routeIs('instructor.courses.goals')
+    ],
+
 ];
 @endphp
     <x-container class="py-8">
