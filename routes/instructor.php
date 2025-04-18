@@ -16,3 +16,5 @@ Route::get('courses/{course}/video', [CourseController::class, 'video'])->name('
 
 
 Route::get('courses/{course}/goals', [CourseController::class, 'goals'])->name('courses.goals');
+
+Route::get('courses/{course}/requirements', [CourseController::class, 'requirements'])->name('courses.requirements');

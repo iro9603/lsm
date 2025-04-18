@@ -58,4 +58,8 @@ class Course extends Model
     public function goals(){
         return $this->hasMany(Goal::class);
     }
+
+    public function requirements(){
+        return $this->hasMany(Requirement::class);
+    }
 }

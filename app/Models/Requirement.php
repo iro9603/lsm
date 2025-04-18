@@ -2,18 +2,14 @@
 
 namespace App\Models;
 
-use App\Observers\GoalObserver;
+use App\Observers\RequirementObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-#[ObservedBy(GoalObserver::class)]
-class Goal extends Model
-{
+#[ObservedBy([RequirementObserver::class])]
+class Requirement extends Model
+{   
     use HasFactory;
-
     protected $fillable = ['name', 'course_id', 'position'];
-
-    
-
 }
