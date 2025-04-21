@@ -24,6 +24,12 @@
         'active' => request()->routeIs('instructor.courses.requirements')
     ],
 
+    [
+        'name' => 'Curriculum',
+        'url' =>route('instructor.courses.curriculum', $course),
+        'active' => request()->routeIs('instructor.courses.curriculum')
+    ],
+
 ];
 @endphp
     <x-container class="py-8">

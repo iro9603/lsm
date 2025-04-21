@@ -16,7 +16,7 @@
             @forelse ($courses as $course)
                 <li class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <a href="{{ route('instructor.courses.edit', $course) }}" class="md:flex">
-                        <figure class="s flex-shrink-0">
+                        <figure class=" flex-shrink-0">
                             <img src="{{ $course->image }}" class="w-full md:w-36 aspect-video md:aspect-square object-cover object-center">
                         </figure>
 

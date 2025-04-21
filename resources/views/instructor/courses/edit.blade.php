@@ -131,7 +131,6 @@
                     </div>
                 </div>
             </div>
-
         </form>
     </x-instructor.course-sidebar>
 
