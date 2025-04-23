@@ -27,7 +27,7 @@ class ManageSections extends Component
 
     public function getSections()
     {
-        $this->sections = Section::where('course_id', $this->course->id)->orderBy('position', 'asc')->get();
+        $this->sections = Section::where('course_id', $this->course->id)->with('lessons')->orderBy('position', 'asc')->get();
     }
 
     public function store()

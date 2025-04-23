@@ -12,11 +12,17 @@ class Section extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name',  'course_id', 'position'];
+    protected $fillable = ['name', 'course_id', 'position'];
 
     // Relacion uno a muchos inversa
 
-    public function course(){
+    public function course()
+    {
         return $this->belongsTo(Course::class);
+    }
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
     }
 }

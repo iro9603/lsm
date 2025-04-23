@@ -59,7 +59,11 @@
                                 @include('instructor.sections.show')
 
                             @endif
-
+                            
+                            <div class="mt-4">
+                            @livewire('instructor.courses.manage-lessons', ['section' => $section,
+                            'lessons' => $section->lessons], key($section->id))
+                            </div>
 
                         </div>
                     </li>
@@ -74,8 +78,8 @@
     @push('js')
 
         <script src="
-                     https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js
-                     "></script>
+            https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js
+            "></script>
 
         <script>
             const requirements = document.getElementById('requirements');
