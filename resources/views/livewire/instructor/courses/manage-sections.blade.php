@@ -59,11 +59,14 @@
                                 @include('instructor.sections.show')
 
                             @endif
-                            
+
                             <div class="mt-4">
-                            @livewire('instructor.courses.manage-lessons', ['section' => $section,
-                            'lessons' => $section->lessons], key($section->id))
-                            </div>
+
+                                 @livewire('instructor.courses.manage-lessons', ['section' => $section,
+                                'lessons' => $section->lessons,
+                                'orderLessons' => $orderLessons], key('section-'. $section->id. '-position-' . $loop->iteration
+                                . $orderLessons->join('-')))
+                            </div> 
 
                         </div>
                     </li>
@@ -78,20 +81,24 @@
     @push('js')
 
         <script src="
-            https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js
-            "></script>
+                https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js
+                "></script>
 
         <script>
             const requirements = document.getElementById('requirements');
-            const sortable = new Sortable(requirements, {
-                animation: 150,
-                ghostClass: 'blue-background-class',
-                store: {
-                    set: (sortable) => {
-                        @this.call('sortRequirements', sortable.toArray());
+            if (requirements != null) {
+                const sortable = new Sortable(requirements, {
+                    animation: 150,
+                    ghostClass: 'blue-background-class',
+                    store: {
+                        set: (sortable) => {
+                            @this.call('sortRequirements', sortable.toArray());
+                        }
                     }
-                }
-            });
+                });
+            }
+
+
         </script>
 
         <script>

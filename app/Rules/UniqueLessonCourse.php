@@ -16,9 +16,12 @@ class UniqueLessonCourse implements ValidationRule
 
     public $courseId;
 
-    public function __construct($courseId)
+
+
+    public function __construct($courseId, )
     {
         $this->courseId = $courseId;
+
     }
 
     public function validate(string $attribute, mixed $value, Closure $fail): void

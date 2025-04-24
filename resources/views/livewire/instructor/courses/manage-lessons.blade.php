@@ -1,4 +1,123 @@
 <div>
+
+    <div 
+    x-data="{
+    
+     destroyLesson(lessonId){
+        
+            Swal.fire(
+            
+            {
+                    title: 'Are you sure?',
+                    text: 'You won\'t be able to revert this!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancelar' 
+                } 
+
+            ).then((result) => {
+            if (result.isConfirmed) {
+                if(result.isConfirmed){
+                    @this.call('destroy', lessonId);
+                }
+                }
+            });
+                
+        }
+
+    }"
+
+    x-init="
+
+        new Sortable($refs.lessons, {
+            group: 'lessons',
+            animation: 150,
+            handle:'.handle-lesson',
+            ghostClass: 'blue-background-class',
+             store:{
+                 set:(sortable) => {
+                     Livewire.dispatch('sortLessons',{
+                        sorts: sortable.toArray(),
+                        sectionId: {{ $section->id }}
+                     });
+                 }
+             }
+         });
+        " 
+    class="mb-6">
+        <ul class="space-y-4" x-ref="lessons" 
+        
+        >
+            @foreach ($lessons as $lesson)
+                <li wire:key="lesson-{{ $lesson->id }}" data-id="{{ $lesson->id }}">
+                    <div class="bg-white rounded-lg shadow-lg px-6 py-4">
+
+
+                        @if ($lessonEdit['id'] == $lesson->id)
+                            <form wire:submit="update">
+                                <div class="flex items-center space-x-2">
+                                    <x-label>
+                                        Lección:
+                            
+                                    </x-label>
+                            
+                                    <x-input wire:model="lessonEdit.name" class="flex-1" />
+                            
+                            
+                                </div>
+                            
+                                <div class="flex justify-end mt-4">
+                                    <div class="space-x-2">
+                                        <x-danger-button wire:click="$set('lessonEdit.id',null)">
+                                            Cancelar
+                                        </x-danger-button>
+                            
+                                        <x-button>
+                                            Actualizar
+                                        </x-button>
+                                    </div>
+                            
+                                </div>
+                            
+                            </form>
+                        @else
+                            <div class="md:flex md:items-center">
+                                <h1 class="md:flex-1 truncate cursor-move handle-lesson">
+                                    <i class="fas fa-play-circle text-blue-600"></i>
+                                    Lección {{ $orderLessons-> search($lesson->id)+1 }}:
+                                    {{ $lesson->name }}
+                                </h1>
+
+                            
+                                <div class="space-x-3 md:shrink-0 md:ml-4">
+
+                                    <button wire:click="edit({{ $lesson->id }})">
+                                        <i class="fas fa-edit hover:text-indigo-600"></i>
+                                    </button>
+                            
+                                    <button x-on:click="destroyLesson({{ $lesson->id }})">
+                                        <i class="far fa-trash-alt hover:text-red-600"></i>
+                                    </button>
+
+                                    <button >
+                                        <i class="fa-solid fa-chevron-down hover:text-blue-600"></i>
+                                    </button>
+
+                                </div>
+                            </div>
+                        @endif
+
+                        
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
+    {{-- Creación --}}
     <div x-data="{
         open:@entangle('lessonCreate.open'),
         platform:@entangle('lessonCreate.platform')

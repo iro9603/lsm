@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Instructor\Courses;
 
+use App\Models\Lesson;
 use App\Models\Section;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ManageSections extends Component
@@ -20,14 +22,26 @@ class ManageSections extends Component
         'name' => null
     ];
 
+    public $orderLessons;
+
     public function mount()
     {
         $this->getSections();
     }
 
+    #[On('refreshOrderLessons')]
+
     public function getSections()
     {
-        $this->sections = Section::where('course_id', $this->course->id)->with('lessons')->orderBy('position', 'asc')->get();
+        $this->sections = Section::where('course_id', $this->course->id)->orderBy('position', 'asc')->with([
+            'lessons' => function ($query) {
+                $query->orderBy('position', 'asc');
+            }
+        ])->get();
+
+        $this->orderLessons = $this->sections->pluck('lessons')->collapse()->pluck('id');
+
+        /* $this->sections = Section::where('course_id', $this->course->id)->orderBy('position', 'asc')->get(); */
     }
 
     public function store()
@@ -103,11 +117,27 @@ class ManageSections extends Component
         ]);
     }
 
+
     public function sortSections($sorts)
     {
+
         foreach ($sorts as $position => $sectionId) {
             Section::find($sectionId)->update([
                 'position' => $position + 1
+            ]);
+        }
+
+        $this->getSections();
+    }
+
+    #[On('sortLessons')]
+    public function sortLessons($sorts, $sectionId)
+    {
+
+        foreach ($sorts as $position => $lessonId) {
+            Lesson::find($lessonId)->update([
+                'position' => $position + 1,
+                'section_id' => $sectionId
             ]);
         }
 

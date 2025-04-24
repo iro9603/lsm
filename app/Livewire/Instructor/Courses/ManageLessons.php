@@ -15,7 +15,9 @@ class ManageLessons extends Component
     use WithFileUploads;
 
     public $section;
-    public $lesson;
+    public $lessons;
+
+    public $orderLessons;
 
     public $video, $url;
 
@@ -27,6 +29,16 @@ class ManageLessons extends Component
         /* 'video_path' => null, */
         'video_original_name' => null
     ];
+
+    public $lessonEdit = [
+        'id' => null,
+        'name' => null
+    ];
+
+    public function getLessons()
+    {
+        $this->lessons = Lesson::where('section_id', $this->section->id)->orderBy('position', 'asc')->get();
+    }
 
     public function rules()
     {
@@ -63,6 +75,43 @@ class ManageLessons extends Component
         }
 
         $this->reset(['url', 'lessonCreate']);
+
+        $this->getLessons();
+
+        $this->dispatch('refreshOrderLessons');
+    }
+
+    public function edit($lessonId)
+    {
+        $lesson = Lesson::find($lessonId);
+        $this->lessonEdit = [
+            'id' => $lesson->id,
+            'name' => $lesson->name
+        ];
+    }
+
+    public function update()
+    {
+        $this->validate([
+            'lessonEdit.name' => ['required']
+        ]);
+
+        Lesson::find($this->lessonEdit['id'])->update([
+            'name' => $this->lessonEdit['name']
+        ]);
+
+        $this->reset('lessonEdit');
+
+        $this->getLessons();
+
+    }
+
+    public function destroy($lessonId)
+    {
+        $lesson = Lesson::find($lessonId);
+        $lesson->delete();
+        $this->getLessons();
+        $this->dispatch('refreshOrderLessons');
     }
 
     #[On('uploadVideo')]
