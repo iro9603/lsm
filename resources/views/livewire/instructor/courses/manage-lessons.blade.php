@@ -84,6 +84,10 @@
                             
                             </form>
                         @else
+
+                        <div x-data="{
+                            open: true
+                        }">
                             <div class="md:flex md:items-center">
                                 <h1 class="md:flex-1 truncate cursor-move handle-lesson">
                                     <i class="fas fa-play-circle text-blue-600"></i>
@@ -102,15 +106,21 @@
                                         <i class="far fa-trash-alt hover:text-red-600"></i>
                                     </button>
 
-                                    <button >
-                                        <i class="fa-solid fa-chevron-down hover:text-blue-600"></i>
+                                    <button x-on:click="open =! open">
+                                        <i class="fa-solid  hover:text-blue-600" :class="{
+                                            'fa-chevron-down':!open,
+                                            'fa-chevron-up': open
+                                        }"></i>
                                     </button>
 
                                 </div>
                             </div>
-                        @endif
 
-                        
+                            <div x-show="open" x-cloak class="mt-4">
+                                @livewire('instructor.courses.manage-lesson-content', ['lesson'=> $lesson], key('section-'. $section->id . '-lesson-' . $lesson->id . '-content-' . $loop->iteration . '-'))
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </li>
             @endforeach
