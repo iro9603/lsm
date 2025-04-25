@@ -24,9 +24,31 @@ class ManageLessonContent extends Component
 
     public $description;
 
+    public $is_published, $is_preview;
+
     public function mount($lesson)
     {
         $this->description = $lesson->description;
+
+        $this->is_published = $lesson->is_published;
+
+        $this->is_preview = $lesson->is_preview;
+    }
+
+    public function updated($property, $value)
+    {
+        if ($property == 'is_published') {
+            $this->lesson->is_published = $value;
+
+            $this->lesson->save();
+        }
+
+
+        if ($property == 'is_preview') {
+            $this->lesson->is_preview = $value;
+
+            $this->lesson->save();
+        }
     }
 
     public function saveVideo()

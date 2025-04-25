@@ -41,7 +41,7 @@ class ManageSections extends Component
 
         $this->orderLessons = $this->sections->pluck('lessons')->collapse()->pluck('id');
 
-        /* $this->sections = Section::where('course_id', $this->course->id)->orderBy('position', 'asc')->get(); */
+
     }
 
     public function store()
