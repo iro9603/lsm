@@ -16,7 +16,18 @@ class ManageLessonContent extends Component
 
     public $editVideo = false;
 
+    public $editDescription = false;
+
     public $platform = 1, $video, $url;
+
+
+
+    public $description;
+
+    public function mount($lesson)
+    {
+        $this->description = $lesson->description;
+    }
 
     public function saveVideo()
     {
@@ -81,6 +92,15 @@ class ManageLessonContent extends Component
 
     }
 
+    public function saveDescription()
+    {
+        $this->lesson->description = $this->description;
+
+        $this->lesson->save();
+
+        $this->reset('editDescription');
+
+    }
 
     public function render()
     {

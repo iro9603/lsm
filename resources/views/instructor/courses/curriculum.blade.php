@@ -6,8 +6,12 @@
     </x-slot>
 
     <x-instructor.course-sidebar :course="$course">
-        @livewire('instructor.courses.manage-sections', ['course' => $course],key(['manage-sections']))
+        @livewire('instructor.courses.manage-sections', ['course' => $course], key(['manage-sections']))
     </x-instructor.course-sidebar>
 
+    @push('js')
+        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    @endpush
 
 </x-instructor-layout>
