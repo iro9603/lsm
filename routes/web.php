@@ -1,23 +1,60 @@
 <?php
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckOutController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ManageDatesController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Middleware\CheckCartItems;
+use App\Livewire\Asesoria;
+use App\Models\AvailableSlot;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\TimeSlot;
+use CodersFree\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Route;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg
-;
-Route::get('/', function () {
-    return view('welcome');
-});
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Illuminate\Support\Facades\Auth;
+
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+
+Route::get('courses', [CourseController::class, 'index'])->name('courses.index');
+
+Route::get('courses/{course}', [CourseController::class, 'show'])->name('courses.show');
+
+Route::get('courses-status/{course}', [CourseController::class, 'status'])->name('courses.status');
+
+Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+
+Route::get('checkout', [CheckOutController::class, 'index'])->middleware(CheckCartItems::class)->name('checkout.index');
 
 Route::get('prueba', function () {
-    $course = Course::first();
-    $sections = $course->sections()->with([
-        'lessons' => function ($query) {
-            $query->orderBy('position', 'asc');
-        }
-    ])->get();
+    /* TimeSlot::create([
+        'start_time' => '10:00:00',
+        'end_time' => '11:00:00'
+    ]); */
 
-    $orderLessons = $sections->pluck('lessons')->collapse()->pluck('id');
+    AvailableSlot::create([
+        'date' => '2025-04-30',
+        'time_slot_id' => 2
+    ]);
 
-    return $orderLessons->search(5) + 1;
 });
+
+Route::post('/create-spei-payment', [PaymentController::class, 'createSPEIPayment'])->name('checkout.payment');
+
+Route::post('checkout/createPaypalOrder', [CheckOutController::class, 'createPaypalOrder'])->name('checkout.createPaypalOrder');
+
+Route::post('checkout/capturePaypalOrder', [CheckOutController::class, 'capturePaypalOrder'])->name('checkout.capturePaypalOrder');
+
+Route::get('gracias', function () {
+    return view('gracias');
+})->name('gracias');
+
+Route::get('asesoria/', [Asesoria::class, 'index'])->name('asesoria');
+
+Route::get('calendar/{date}', [ManageDatesController::class, 'getTimeSlots'])->name('calendar.getTimeSlots');
+
+Route::post('calendar/captureClass', [ManageDatesController::class, 'handleForm'])->name('calendar.handleForm');
+

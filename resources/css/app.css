@@ -1,7 +1,11 @@
+
 @import "components.css";
+
+
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; 
+
 
 [x-cloak] {
     display: none;

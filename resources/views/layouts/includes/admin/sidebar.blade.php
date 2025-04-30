@@ -12,10 +12,10 @@
             'header' => 'Administrar página'
         ],
         [
-            'name' => 'Usuarios',
+            'name' => 'Calendario',
             'icon' => 'fa-solid fa-users',
-            'route' => '',
-            'active' => false
+            'route' => route('admin.calendario'),
+            'active' => request()->routeIs('admin.calendario')
         ],
 
         [
@@ -54,7 +54,7 @@
                         <div x-data="{
                             open: {{$link['active'] ? true: false}}
                         }">
-                            <button class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$link['active'] ? 'bg-indigo-500' : ''}}"
+                            <button class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$link['active'] ? 'bg-gray-500' : ''}}"
                                 x-on:click="open = !open"
                             >
                             
@@ -75,7 +75,7 @@
                             <ul x-show="open" x-cloak>
                                 @foreach ( $link['submenu'] as $item)
                                     <li class="pl-4">
-                                        <a href="" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$item['active'] ? 'bg-indigo-500' : ''}}">
+                                        <a href="" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$item['active'] ? 'bg-gray-500' : ''}}">
                                             <span class="inline-flex w-6 h-6 justify-center items-center">
                                                 <i class="{{$item['icon']}}"></i>
                                             </span>
@@ -89,7 +89,7 @@
                             </ul>
                         </div>
                     @else
-                        <a href="{{$link['route']}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$link['active'] ? 'bg-indigo-500' : ''}}">
+                        <a href="{{$link['route']}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$link['active'] ? 'bg-gray-300' : ''}}">
                             <span class="inline-flex w-6 h-6 justify-center items-center">
                                 <i class="{{$link['icon']}}"></i>
                             </span>

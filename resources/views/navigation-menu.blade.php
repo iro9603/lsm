@@ -1,10 +1,15 @@
 @php
     $links = [
         [
-            'name' => 'dashboard',
-            'route' => '#',
-            'active' => true 
-        ]
+            'name' => 'Cursos',
+            'route' => route('courses.index'),
+            'active' => request()->routeIs('courses.index') 
+],
+[
+    'name' => 'Asesoría',
+            'route' => route('asesoria'),
+            'active' => request()->routeIs('asesoria') 
+]
 ];
 @endphp
 
@@ -21,10 +26,10 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8  sm:-my-px sm:ms-10 sm:flex ">
                     @foreach ($links as $item)
                     
-                        <x-nav-link href="{{ $item['route'] }}" :active="$item['active']">
+                        <x-nav-link class="text-xl" href="{{ $item['route'] }}" :active="$item['active']">
                             {{ $item['name'] }}
                         </x-nav-link>
                     @endforeach
@@ -33,6 +38,26 @@
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
               
+                <div 
+                class="relative "
+                x-data="
+                {
+                count: {{ Cart::instance('shopping')->count() }}
+                }
+                "
+                x-on:cart-updated.window="count = $event.detail[0]"
+                >
+                    <a href="{{ route('cart.index') }}">
+                        <i class="fa-solid fa-cart-shopping text-xl text-gray-600"></i>
+                        <template x-if="count > 0">
+                            <span 
+                        x-show="count"
+                        x-text="count"
+                        class="absolute -top-2 -right-4 inline-flex items-center justify-center  py-1 w-6 text-xs font-bold text-blue-100 bg-blue-500 rounded-full"></span>
+                        </template>
+                    </a>
+                </div>
+
                 <!-- Settings Dropdown -->
                 <div class="ms-3 relative">
                     @auth

@@ -39,4 +39,18 @@ return [
         'key' => env('YOUTUBE_KEY'),
     ],
 
+    'stripe' => [
+        'secret' => env('STRIPE_SECRET'),
+        'public' => env('STRIPE_PUBLIC'),
+    ],
+
+    'paypal' => [
+        'client_id' => env('PAYPAL_CLIENT_ID'),
+        'secret' => env('PAYPAL_SECRET'),
+        'url' => env('PAYPAL_URL'),
+        'token_url' => env('PAYPAL_URL') . '/v1/oauth2/token',
+        'order_url' => env('PAYPAL_URL') . '/v2/checkout/orders',
+    ]
+
+
 ];

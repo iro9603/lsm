@@ -16,8 +16,8 @@ class CourseController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
-        $courses = Course::where('user_id', auth()->id())->get();
+    {
+        $courses = Course::where('user_id', auth()->id())->paginate(3);
         return view('instructor.courses.index', compact('courses'));
     }
 
@@ -41,15 +41,15 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $data = $request->validate([
             'title' => 'required',
             'slug' => 'required|unique:courses',
-/*             'summary' => 'required', */
+            /*             'summary' => 'required', */
             'category_id' => 'required|exists:categories,id',
             'level_id' => 'required|exists:levels,id',
             'price_id' => 'required|exists:prices,id'
-            
+
         ]);
 
         $data['user_id'] = auth()->id();
@@ -71,7 +71,7 @@ class CourseController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Course $course)
-    {   
+    {
         $categories = Category::all();
 
         $levels = Level::all();
@@ -88,9 +88,9 @@ class CourseController extends Controller
     {
 
 
-        $data= $request->validate([
+        $data = $request->validate([
             'title' => 'required|max:255',
-            'slug' => 'required|max:255|unique:courses,slug,'.$course->id,
+            'slug' => 'required|max:255|unique:courses,slug,' . $course->id,
             'summary' => 'nullable|max:1000',
             'description' => 'nullable',
             'category_id' => 'required|exists:categories,id',
@@ -98,8 +98,8 @@ class CourseController extends Controller
             'price_id' => 'required|exists:prices,id'
         ]);
 
-        if($request->hasFile('image')){
-            if($course->image_path){
+        if ($request->hasFile('image')) {
+            if ($course->image_path) {
                 Storage::delete($course->image_path);
             }
 
@@ -123,19 +123,23 @@ class CourseController extends Controller
         //
     }
 
-    public function video(Course $course){
+    public function video(Course $course)
+    {
         return view('instructor.courses.video', compact('course'));
     }
 
-    public function goals(Course $course){
+    public function goals(Course $course)
+    {
         return view('instructor.courses.goals', compact('course'));
     }
 
-    public function requirements(Course $course){
+    public function requirements(Course $course)
+    {
         return view('instructor.courses.requirements', compact('course'));
     }
 
-    public function curriculum(Course $course){
+    public function curriculum(Course $course)
+    {
         return view('instructor.courses.curriculum', compact('course'));
     }
 }

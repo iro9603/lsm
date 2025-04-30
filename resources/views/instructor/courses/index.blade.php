@@ -12,7 +12,7 @@
             </a>
         </div>
 
-        <ul>
+        <ul class="space-y-4">
             @forelse ($courses as $course)
                 <li class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <a href="{{ route('instructor.courses.edit', $course) }}" class="md:flex">
@@ -95,6 +95,11 @@
 
             @endforelse
         </ul>
+
+        <div class="mt-8">
+            {{ $courses->links() }}
+        </div>
+
     </x-container>
 
 </x-instructor-layout>
