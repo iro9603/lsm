@@ -37,6 +37,11 @@ class Course extends Model
         'published_at' => 'datetime'
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     protected function image(): Attribute
     {
         return new Attribute(

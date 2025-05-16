@@ -13,6 +13,7 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\TimeSlot;
 use CodersFree\Shoppingcart\Facades\Cart;
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +22,12 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::get('courses', [CourseController::class, 'index'])->name('courses.index');
 
+
+Route::get('courses/my-courses', [CourseController::class, 'myCourses'])->middleware('auth')->name('courses.myCourses');
+
 Route::get('courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 
-Route::get('courses-status/{course}', [CourseController::class, 'status'])->name('courses.status');
+Route::get('courses-status/{course}/{lesson?}', [CourseController::class, 'status'])->name('courses.status');
 
 Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 
@@ -36,7 +40,7 @@ Route::get('prueba', function () {
     ]); */
 
     AvailableSlot::create([
-        'date' => '2025-04-30',
+        'date' => '2025-05-11',
         'time_slot_id' => 2
     ]);
 
@@ -57,4 +61,6 @@ Route::get('asesoria/', [Asesoria::class, 'index'])->name('asesoria');
 Route::get('calendar/{date}', [ManageDatesController::class, 'getTimeSlots'])->name('calendar.getTimeSlots');
 
 Route::post('calendar/captureClass', [ManageDatesController::class, 'handleForm'])->name('calendar.handleForm');
+
+
 

@@ -13,7 +13,7 @@
             </div>
 
             <div class="col-span-1 lg:col-span-6">
-                <form action="{{ route('calendar.handleForm') }}" method="POST">
+                <form action="{{ route('calendar.handleForm') }}" id="dateForm" method="POST">
                     @csrf
                     <div
                         class="w-full p-6  bg-white border mt-8 border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
@@ -101,50 +101,19 @@
                             </div>
                         </div>
                         <div class="mt-5 flex justify-end">
-                            <button class="btn btn-red">Acceptar</button>
+                            <button class="btn btn-red" type="submit">Acceptar</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+
+
     </x-container>
 
 
     @push('js')
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-        <script>
-
-            // set the target element of the input field
-            const $datepickerEl = document.getElementById('datepicker-actions');
-
-            // optional options with default values and callback functions
-            const options = {
-                defaultDatepickerId: null,
-                autohide: true,
-                format: 'dd/mm/yyyy',
-                maxDate: null,
-                minDate: new Date(),
-                orientation: 'bottom',
-                buttons: false,
-                autoSelectToday: false,
-                title: null,
-                rangePicker: false,
-                onShow: () => { },
-                onHide: () => { },
-            };
-
-            const instanceOptions = {
-                id: 'datepicker-actions-example',
-                override: true
-            };
-
-            /*
-             * $datepickerEl: required
-             * options: optional
-             */
-
-
-        </script>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @endpush
 </x-app-layout>

@@ -5,8 +5,8 @@
         @if ($editVideo)
             <div
                 x-data="{
-                                                                                                                                                                                                                                                                                                                                                platform: @entangle('platform')
-                                                                                                                                                                                                                                                                                                                                                }">
+                                                                                                                                                                                                                                                                                                                                                                    platform: @entangle('platform')
+                                                                                                                                                                                                                                                                                                                                                                    }">
                 <div class="md:flex md:items-center md:space-x-4 space-y-4 md:space-y-0">
                     <div class="md:flex md:items-center md:space-x-4 space-y-4 md:space-y-0">
                         <button type="button"
@@ -92,8 +92,8 @@
                     </div>
                 @else
 
-                    <div>
-                        <table class="table-auto w-full">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full table-auto border border-gray-200 text-sm">
                             <thead class="border-b border-gray-200">
                                 <tr class="font-bold">
                                     <td class="px-4 py-2">
@@ -145,35 +145,35 @@
             <form wire:submit="saveDescription">
                 <div x-data="{
 
-                    content:@entangle('description'),
-                    myEdit: '',
+                                        content:@entangle('description'),
+                                        myEdit: '',
 
-                    }" x-init="
+                                        }" x-init="
 
-                        const editor = new Quill($refs.editor, {
-                        theme: 'snow',
+                                            const editor = new Quill($refs.editor, {
+                                            theme: 'snow',
 
-                        });
-                        const quillEditor = document.getElementById('quill-editor-area');
-                        // Set default value if it's not empty
-                        const defaultValue = quillEditor.value.trim(); 
-                        if (defaultValue) {
-                            editor.clipboard.dangerouslyPasteHTML(defaultValue); 
-                        }
+                                            });
+                                            const quillEditor = document.getElementById('quill-editor-area');
+                                            // Set default value if it's not empty
+                                            const defaultValue = quillEditor.value.trim(); 
+                                            if (defaultValue) {
+                                                editor.clipboard.dangerouslyPasteHTML(defaultValue); 
+                                            }
 
-                        // Sync Quill with the hidden input
+                                            // Sync Quill with the hidden input
 
-                        editor.on('text-change', function() {
-                                quillEditor.value = editor.root.innerHTML;
-                                content = quillEditor.value;
-                        });
+                                            editor.on('text-change', function() {
+                                                    quillEditor.value = editor.root.innerHTML;
+                                                    content = quillEditor.value;
+                                            });
 
-                        quillEditor.addEventListener('input', function () {
-                            editor.root.innerHTML = quillEditor.value;
-                        });
+                                            quillEditor.addEventListener('input', function () {
+                                                editor.root.innerHTML = quillEditor.value;
+                                            });
 
 
-                        ">
+                                            ">
                     <div x-ref="editor"></div>
                     <input type="hidden" id="quill-editor-area" name="description" wire:model="description"
                         value="{{ $description }}" />

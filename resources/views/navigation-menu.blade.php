@@ -91,6 +91,10 @@
                                     {{ __('Profile') }}
                                 </x-dropdown-link>
 
+                                <x-dropdown-link href="{{ route('courses.myCourses') }}">
+                                    Mis cursos
+                                </x-dropdown-link>
+
                                 <div class="border-t border-gray-200"></div>
 
                                 <!-- Authentication -->

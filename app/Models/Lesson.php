@@ -39,6 +39,11 @@ class Lesson extends Model
         'is_processed' => 'boolean',
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function image(): Attribute
     {
         return new Attribute(get: function () {
@@ -55,4 +60,13 @@ class Lesson extends Model
         return $this->belongsTo(Section::class);
     }
 
+    // Relacion muchos a muchos 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'course_lesson_user')->withPivot([
+            'course_id',
+            'current',
+            'completed'
+        ])->withTimestamps();
+    }
 }

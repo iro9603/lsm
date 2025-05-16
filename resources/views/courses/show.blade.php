@@ -44,10 +44,9 @@
 
                     <ul class="space-y-4">
                         @foreach ($course->sections as $section)
-                            <li
-                                x-data="{
-                                                                                                                                                                                                                                                                                                                                                                                                open:false
-                                                                                                                                                                                                                                                                                                                                                                                            }">
+                            <li x-data="{
+                                                            open:false
+                                                        }">
                                 <div class="bg-white rounded-lg">
 
                                     <button x-on:click="open = !open" class="flex w-full p-4 bg-gray-50 text-left border-b">
@@ -62,10 +61,10 @@
 
                                     <div class="p-4" x-show="open" x-cloak>
                                         <ul>
-                                            @foreach ($section->lessons as $lesson)
+                                            @foreach ($section->lessons->sortBy('position') as $lesson)
 
                                                 <li>
-                                                    <a class="flex" href="">
+                                                    <a class="flex" href="{{ route('courses.status', [$course, $lesson]) }}">
                                                         <i class="far fa-play-circle text-blue-500 mt-0.5 mr-2"></i>
 
                                                         <span class="font-semibold text-gray-600 hover:blue  text-sm">

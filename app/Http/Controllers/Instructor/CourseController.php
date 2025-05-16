@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Level;
 use App\Models\Price;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
@@ -17,7 +18,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::where('user_id', auth()->id())->paginate(3);
+        $courses = Course::where('user_id', Auth::id())->paginate(3);
         return view('instructor.courses.index', compact('courses'));
     }
 
@@ -52,7 +53,7 @@ class CourseController extends Controller
 
         ]);
 
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = Auth::id();
 
         $course = Course::create($data);
 
