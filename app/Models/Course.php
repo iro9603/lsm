@@ -61,6 +61,17 @@ class Course extends Model
         );
     }
 
+    protected function rating(): Attribute
+    {
+        return new Attribute(
+            get: function () {
+
+                return $this->reviews->count() ? round($this->reviews->avg('rating'), 2) : 5;
+            }
+        );
+    }
+
+
     public function teacher()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -92,6 +103,11 @@ class Course extends Model
     public function students()
     {
         return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id')->withTimestamps();
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
     public function sections()

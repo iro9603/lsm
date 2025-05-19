@@ -35,13 +35,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategorySeeder::class,
             LevelSeeder::class,
-            PriceSeeder::class
+            PriceSeeder::class,
+            CourseSeeder::class,
+
+            PermissionSeeder::class,
+            RoleSeeder::class
+
         ]);
-
-        // Crear datos base
-        User::factory()->count(5)->create();
-
-
-        Course::factory(30)->create();
     }
 }

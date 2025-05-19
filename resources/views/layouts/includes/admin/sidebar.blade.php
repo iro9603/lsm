@@ -13,9 +13,15 @@
         ],
         [
             'name' => 'Calendario',
-            'icon' => 'fa-solid fa-users',
+            'icon' => 'fa-regular fa-calendar',
             'route' => route('admin.calendario'),
             'active' => request()->routeIs('admin.calendario')
+        ],
+        [
+            'name' => 'Usuarios',
+            'icon' => 'fa-solid fa-users',
+            'route' => route('admin.users.index'),
+            'active' => request()->routeIs('admin.users.*')
         ],
 
         [

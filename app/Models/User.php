@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -19,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -65,9 +67,15 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    // relacion muchos a muchos
+
     public function courses_enrolled()
     {
         return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
+    }
+
+    // relacion uno a muchos
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

@@ -14,6 +14,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    @stack('css')
+
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/785298cd2f.js" crossorigin="anonymous"></script>
 
@@ -39,7 +41,15 @@
     <div class="p-4 sm:ml-64">
 
         <div class="mt-14">
-            @include('layouts.includes.admin.breadcrumb')
+           <div class="flex items-center">
+             @include('layouts.includes.admin.breadcrumb')
+
+            @isset ($action)
+                <div class="ml-auto mb-2">
+                    {{ $action }}
+                </div>
+            @endisset
+           </div>
 
             <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
                 {{ $slot }}
@@ -54,6 +64,25 @@
     @stack('modals')
 
     @livewireScripts
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        Livewire.on('swal', (data)=>{
+            Swal.fire(data[0]);
+
+        
+        });
+        
+    </script>
+    @if (session('swal'))
+
+    <script>
+        Swal.fire({!! json_encode(session('swal')) !!})
+    </script>
+        
+    @endif
+
+    @stack('js')
 </body>
 
 </html>

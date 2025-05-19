@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -23,6 +24,12 @@ class CourseStatus extends Component
     public $completed = false;
 
     public $advance;
+
+    public $review = [
+        'open' => false,
+        'rating' => 5,
+        'comment' => ''
+    ];
 
     public function mount()
     {
@@ -87,6 +94,34 @@ class CourseStatus extends Component
     public function setAdvance()
     {
         $this->advance = round($this->open_lessons->where('completed', 1)->count() * 100 / ($this->lessons->count()));
+    }
+
+    public function completedLesson()
+    {
+        DB::table('course_lesson_user')->where('lesson_id', $this->current->id)->where('user_id', Auth::id())->update([
+            'completed' => true
+        ]);
+
+        $this->nextLesson();
+    }
+
+
+    public function storeReview()
+    {
+
+        $this->validate([
+            'review.rating' => 'required',
+            'review.comment' => 'required'
+        ]);
+
+        Review::create([
+            'user_id' => Auth::id(),
+            'course_id' => $this->course->id,
+            'rating' => $this->review['rating'],
+            'comment' => $this->review['comment']
+        ]);
+
+        $this->reset('review');
     }
 
     public function render()

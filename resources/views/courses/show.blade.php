@@ -44,9 +44,7 @@
 
                     <ul class="space-y-4">
                         @foreach ($course->sections as $section)
-                            <li x-data="{
-                                                            open:false
-                                                        }">
+                            <li x-data="{open:false}">
                                 <div class="bg-white rounded-lg">
 
                                     <button x-on:click="open = !open" class="flex w-full p-4 bg-gray-50 text-left border-b">
@@ -101,7 +99,7 @@
 
                 {{-- Descripcion --}}
 
-                <div>
+                <div class="mb-8">
                     <h2 class="text-2xl font-semibold mb-4">
                         Descripción
                     </h2>
@@ -110,6 +108,16 @@
                         {!! $course->description !!}
                     </div>
                 </div>
+
+                {{-- Reseñas --}}
+                @if ($course->reviews->count())
+                    <div>
+                    @livewire('manage-reviews',[
+                        'course' => $course,
+
+                    ], key('manage-reviews'))
+                </div>
+                @endif
 
             </div>
 

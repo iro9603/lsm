@@ -6,25 +6,43 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="col-span-1 lg:col-span-2">
 
-            <div wire:ignore>
-                @if ($current->platform == 1)
-                    <video id="player" playsinline controls data-poster="{{ $current->image }}">
-                        <source src="{{ Storage::url($current->video_path) }}" type="video/mp4">
-                    </video>
-                @else
+            @if (Gate::allows('enrolled', $course) || $current->is_preview)
 
-                    <div class="plyr__video-embed" id="player">
-                        <iframe src="https://www.youtube.com/embed/{{ $current->video_path }}" allowfullscreen
-                            allowtransparency allow="autoplay"></iframe>
-                    </div>
+                <div wire:ignore>
+                    @if ($current->platform == 1)
+                        <video id="player" playsinline controls data-poster="{{ $current->image }}">
+                            <source src="{{ Storage::url($current->video_path) }}" type="video/mp4">
+                        </video>
+                    @else
 
-                    {{-- <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/{{ $current->video_path }}"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-                    </iframe> --}}
-                @endif
-            </div>
+                        <div class="plyr__video-embed" id="player">
+                            <iframe src="https://www.youtube.com/embed/{{ $current->video_path }}" allowfullscreen
+                                allowtransparency allow="autoplay"></iframe>
+                        </div>
+                    @endif
+                </div>
+
+            @else
+
+                <div class="relative">
+                    <figure>
+                        <img class="w-full aspect-video object-cover object-center" src="{{ $current->image }}" alt="">
+                    </figure>
+                </div>
+
+                <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center">
+                    <p class="uppercase text-3xl font-mono font-bold text-white">
+                        Adquiere el curso
+                    </p>
+
+                    <i class="fas fa-unlock text-5xl text-white"></i>
+                    <a href="{{ route('courses.show', $course) }}" class="btn btn-primary mt-4">
+                        Comprar curso
+                    </a>
+                </div>
+
+            @endif
+
 
 
 
@@ -53,8 +71,8 @@
             </div>
 
         </div>
-        <aside class="col-span-1">
-            <div class="card">
+        <div class="col-span-1">
+            <aside class="card mb-4">
                 <h1 class="text-2xl leading-8 text-center mb-4">
                     <a class="hover:text-blue-600" href="{{ route('courses.show', $course) }}">
                         {{ $course->title }}
@@ -127,14 +145,74 @@
                         </li>
                     @endforeach
                 </ul>
-            </div>
-        </aside>
+            </aside>
+
+            @can('review_enabled', $course)
+                <x-button wire:click="$set('review.open', true)" class="w-full flex justify-center">
+                    Calificar este curso
+                </x-button>
+
+            @endcan
+
+        </div>
     </div>
+
+    {{-- Modal review --}}
+
+    <x-dialog-modal wire:model="review.open">
+        <x-slot name="title">
+            <p class="text-3xl font-semibold text-center mt-4 ">!Tu opinión importa!</p>
+        </x-slot>
+        <x-slot name="content">
+            <p class="text-center mb-4">¿Cómo fue tu experiencia?</p>
+            <ul x-data="{rating:@entangle('review.rating')}" class="flex justify-center space-x-3 text-gray-600">
+                <li>
+                    <button x-on:click="rating = 1">
+                        <i class="fas fa-star text-2xl" x-bind:class="rating >= 1 ? 'text-yellow-500' : ''"></i>
+                    </button>
+                </li>
+                <li>
+                    <button x-on:click="rating = 2">
+                        <i class="fas fa-star text-2xl" x-bind:class="rating >= 2 ? 'text-yellow-500' : ''"></i>
+                    </button>
+                </li>
+                <li>
+                    <button x-on:click="rating = 3">
+                        <i class="fas fa-star text-2xl" x-bind:class="rating >= 3 ? 'text-yellow-500' : ''"></i>
+                    </button>
+                </li>
+                <li>
+                    <button x-on:click="rating = 4">
+                        <i class="fas fa-star text-2xl" x-bind:class="rating >= 4 ? 'text-yellow-500' : ''"></i>
+                    </button>
+                </li>
+                <li>
+                    <button x-on:click="rating = 5">
+                        <i class="fas fa-star text-2xl" x-bind:class="rating >= 5 ? 'text-yellow-500' : ''"></i>
+                    </button>
+                </li>
+            </ul>
+
+            <x-textarea wire:model="review.comment" class="w-full mt-4" placeholder="Mensaje..."></x-textarea>
+
+        </x-slot>
+        <x-slot name="footer">
+            <x-button wire:click="storeReview">Dejar reseña</x-button>
+        </x-slot>
+    </x-dialog-modal>
+
     @push('js')
         <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 
         <script>
             const player = new Plyr('#player');
+            /* player.on('ready', event => {
+                player.play();
+            }); */
+
+            player.on('ended', event => {
+                @this.call('completedLesson');
+            });
         </script>
 
     @endpush
