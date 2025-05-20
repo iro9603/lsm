@@ -95,13 +95,18 @@
                                     Mis cursos
                                 </x-dropdown-link>
 
-                                <x-dropdown-link href="{{ route('instructor.courses.index') }}">
+                                @can('manage_courses')
+                                    <x-dropdown-link href="{{ route('instructor.courses.index') }}">
                                     Instructor
-                                </x-dropdown-link>
+                                    </x-dropdown-link>
+                                @endcan
 
-                                <x-dropdown-link href="{{ route('admin.dashboard') }}">
+                                @can('access_dashboard')
+                                    <x-dropdown-link href="{{ route('admin.dashboard') }}">
                                     Administrador
-                                </x-dropdown-link>
+                                    </x-dropdown-link>
+                                @endcan
+                                
 
                                 <div class="border-t border-gray-200"></div>
 

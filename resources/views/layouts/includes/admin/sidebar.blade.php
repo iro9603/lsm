@@ -5,25 +5,44 @@
             'name' => 'Dashboard',
             'icon' => 'fa-solid fa-gauge',
             'route' => route('admin.dashboard'),
-            'active' => request()->routeIs('admin.dashboard')
+            'active' => request()->routeIs('admin.dashboard'),
+            'can' => ['access_dashboard']
         ],
 
         [
-            'header' => 'Administrar página'
+            'header' => 'Administrar página',
+            'can' => ['manage_users', 'manage_roles', 'manage_permissions']
         ],
+
         [
             'name' => 'Calendario',
             'icon' => 'fa-regular fa-calendar',
-            'route' => route('admin.calendario'),
-            'active' => request()->routeIs('admin.calendario')
+            'route' => route('admin.calendar.index'),
+            'active' => request()->routeIs('admin.calendar.*'),
+            'can' => ['access_dashboard']
         ],
         [
             'name' => 'Usuarios',
             'icon' => 'fa-solid fa-users',
             'route' => route('admin.users.index'),
-            'active' => request()->routeIs('admin.users.*')
+            'active' => request()->routeIs('admin.users.*'),
+            'can' => ['manage_users']
         ],
 
+        [
+            'name' => 'Roles',
+            'icon' => 'fa-solid fa-user-tag',
+            'route' => route('admin.roles.index'),
+            'active' => request()->routeIs('admin.roles.*'),
+            'can' => ['manage_roles']
+        ],
+        [
+            'name' => 'Permisos',
+            'icon' => 'fa-solid fa-lock-open',
+            'route' => route('admin.permissions.index'),
+            'active' => request()->routeIs('admin.permissions.*'),
+            'can' => ['manage_permissions']
+        ],
         [
             'name' => 'Empresa',
             'icon' => 'fa-solid fa-building',
@@ -51,7 +70,8 @@
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
         @foreach ( $links as $link )
-            <li>
+            @canany($link['can'] ?? [null])
+                <li>
                 @isset($link['header'])
                     <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">{{$link['header']}}</div>
                 @else
@@ -104,7 +124,8 @@
                     @endisset
                    
                 @endisset
-            </li>
+                </li>
+            @endcanany
         
         @endforeach    
         </ul>
