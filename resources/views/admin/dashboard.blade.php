@@ -30,7 +30,7 @@
         <div class="card">
             <div class="flex  items-center justify-center h-full">
                 <p class="text-2xl font-semibold">
-                    Coders Free
+                    Ndexi Maths Center
                 </p>
             </div>
         </div>

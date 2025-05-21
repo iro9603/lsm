@@ -43,7 +43,7 @@
             'active' => request()->routeIs('admin.permissions.*'),
             'can' => ['manage_permissions']
         ],
-        [
+        /* [
             'name' => 'Empresa',
             'icon' => 'fa-solid fa-building',
             'active' => false,
@@ -56,7 +56,7 @@
                 ]
 
             ]
-        ]
+        ] */
     ];
 @endphp
 

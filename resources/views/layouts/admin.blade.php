@@ -26,13 +26,7 @@
     @livewireStyles
 </head>
 
-<body x-data="{
-    open: false
-
-}" :class="{
-    'overflow-hidden': open,
-
-}" class="sm:overflow-auto">
+<body x-data="{open: false}" :class="{'overflow-hidden': open}" class="sm:overflow-auto">
 
     @include('layouts.includes.admin.navigation')
 
