@@ -18,8 +18,12 @@
     </x-slot>
 
 
-    @livewire('permission-table')
 
+    <div id="calendar"></div>
+
+
+    {{-- @livewire('permission-table')
+    --}}
     @push('js')
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @endpush

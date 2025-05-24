@@ -8,7 +8,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\CheckCartItems;
 use App\Livewire\Asesoria;
-use App\Models\AvailableSlot;
+
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\TimeSlot;
@@ -17,6 +17,8 @@ use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Illuminate\Support\Facades\Auth;
+
+use Carbon\Carbon;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
@@ -34,15 +36,23 @@ Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('checkout', [CheckOutController::class, 'index'])->middleware(CheckCartItems::class)->name('checkout.index');
 
 Route::get('prueba', function () {
-    /* TimeSlot::create([
-        'start_time' => '10:00:00',
-        'end_time' => '11:00:00'
-    ]); */
+    $start = Carbon::createFromTimeString('00:00:00');
 
-    AvailableSlot::create([
+    while ($start->lt(Carbon::createFromTimeString('23:59:59'))) {
+        $end = (clone $start)->addMinutes(30);
+
+        TimeSlot::create([
+            'start_time' => $start->format('H:i:s'),
+            'end_time' => $end->format('H:i:s'),
+        ]);
+
+        $start->addMinutes(30);
+    }
+
+    /* AvailableSlot::create([
         'date' => '2025-05-11',
         'time_slot_id' => 2
-    ]);
+    ]); */
 
 });
 

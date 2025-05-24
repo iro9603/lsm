@@ -14,13 +14,13 @@
             'can' => ['manage_users', 'manage_roles', 'manage_permissions']
         ],
 
-        [
+      /*   [
             'name' => 'Calendario',
             'icon' => 'fa-regular fa-calendar',
             'route' => route('admin.calendar.index'),
             'active' => request()->routeIs('admin.calendar.*'),
             'can' => ['access_dashboard']
-        ],
+        ], */
         [
             'name' => 'Usuarios',
             'icon' => 'fa-solid fa-users',
@@ -43,20 +43,30 @@
             'active' => request()->routeIs('admin.permissions.*'),
             'can' => ['manage_permissions']
         ],
-        /* [
-            'name' => 'Empresa',
-            'icon' => 'fa-solid fa-building',
-            'active' => false,
+        [
+            'name' => 'Reservaciones',
+            'icon' => 'fa-regular fa-calendar',
+            'active' => request()->routeIs('admin.calendar.*') || request()->routeIs('admin.bookings.*'),
+            'can' => ['access_dashboard'],
             'submenu' => [
                 [
-                    'name' => 'Informacion',
+                    'name' => 'Calendario',
                     'icon' => 'fa-regular fa-circle',
-                    'route' => '',
-                    'active' => false
-                ]
+                    'route' => route('admin.calendar.index'),
+                    'active' => request()->routeIs('admin.calendar.index'),
+                    'can' => ['access_dashboard']
+                ],
+                [
+                    'name' => 'Tabla Reservaciones',
+                    'icon' => 'fa-regular fa-circle',
+                    'route' => route('admin.bookings.index'),
+                    'active' => request()->routeIs('admin.bookings.*'),
+                    'can' => ['access_dashboard']
+                ],
+
 
             ]
-        ] */
+        ]
     ];
 @endphp
 
@@ -77,12 +87,8 @@
                 @else
 
                     @isset($link['submenu'])
-                        <div x-data="{
-                            open: {{$link['active'] ? true: false}}
-                        }">
-                            <button class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$link['active'] ? 'bg-gray-500' : ''}}"
-                                x-on:click="open = !open"
-                            >
+                        <div x-data="{open: {{$link['active'] ? 'true': 'false'}}}">
+                            <button class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$link['active'] ? 'bg-gray-300' : ''}}" x-on:click="open = !open">
                             
                                 <span class="inline-flex w-6 h-6 justify-center items-center">
                                     <i class="{{$link['icon']}}"></i>
@@ -101,7 +107,7 @@
                             <ul x-show="open" x-cloak>
                                 @foreach ( $link['submenu'] as $item)
                                     <li class="pl-4">
-                                        <a href="" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$item['active'] ? 'bg-gray-500' : ''}}">
+                                        <a href="{{$item['route']}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$item['active'] ? 'bg-gray-300' : ''}}">
                                             <span class="inline-flex w-6 h-6 justify-center items-center">
                                                 <i class="{{$item['icon']}}"></i>
                                             </span>
