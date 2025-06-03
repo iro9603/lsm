@@ -7,6 +7,7 @@ use App\Models\TimeSlot;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ManageDatesController extends Controller
 {
@@ -45,24 +46,37 @@ class ManageDatesController extends Controller
     public function handleForm(Request $request)
     {
 
-        return $request->all();
+
         // Validate the form data
         $validator = Validator::make($request->all(), [
+            'email' => 'required',
             'date' => 'required|date|after_or_equal:today', // Date must be today or in the future
-            'time' => 'required|in:' . implode(',', TimeSlot::pluck('start_time')->toArray()), // Ensure time exists in available slots
+            'time' => ['required', Rule::in(TimeSlot::pluck('start_time')->toArray())], // Ensure time exists in available slots
         ]);
 
+        $email = $request->input('email');
         if ($validator->fails()) {
-            /*  return redirect()->back()->withErrors($validator)->withInput(); */
-            return implode(',', TimeSlot::pluck('start_time')->toArray());
-        } else {
-            return "exito";
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $selectedDate = Carbon::parse($request->date);
-        $selectedTime = $request->time;
+        // Validar que la fecha+hora no estén en el pasado
+        $selectedDateTime = Carbon::parse($request->input('date') . ' ' . $request->input('time'));
+
+        if ($selectedDateTime->lt(Carbon::now())) {
+
+            return redirect()->back()->withErrors([
+                'time' => 'No puedes seleccionar una hora que ya pasó.',
+            ])->withInput();
+        }
 
 
+
+        /*  return view('booklesson', compact('selectedDate', 'selectedDateTime')); */
+        return view('booklesson')->with([
+            'selectedTime' => $request->input('time'),
+            'selectedDate' => $selectedDateTime->toDateString(),
+            'email' => $email
+        ]);
 
     }
 

@@ -2,12 +2,16 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckOutController;
+use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ManageDatesController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\MercadoPagoController;
+use App\Http\Controllers\StripeController;
+use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\CheckCartItems;
 use App\Livewire\Asesoria;
+
 
 use App\Models\Course;
 use App\Models\Lesson;
@@ -20,12 +24,15 @@ use Illuminate\Support\Facades\Auth;
 
 use Carbon\Carbon;
 
+
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::get('courses', [CourseController::class, 'index'])->name('courses.index');
 
 
 Route::get('courses/my-courses', [CourseController::class, 'myCourses'])->middleware('auth')->name('courses.myCourses');
+
+Route::get('my-classes', [ClassesController::class, 'index'])->middleware('auth')->name('classes.myClasses');
 
 Route::get('courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 
@@ -56,7 +63,7 @@ Route::get('prueba', function () {
 
 });
 
-Route::post('/create-spei-payment', [PaymentController::class, 'createSPEIPayment'])->name('checkout.payment');
+/* Route::post('/create-spei-payment', [PaymentController::class, 'createSPEIPayment'])->name('checkout.payment'); */
 
 Route::post('checkout/createPaypalOrder', [CheckOutController::class, 'createPaypalOrder'])->name('checkout.createPaypalOrder');
 
@@ -64,13 +71,13 @@ Route::post('checkout/capturePaypalOrder', [CheckOutController::class, 'captureP
 
 Route::get('gracias', function () {
     return view('gracias');
-})->name('gracias');
+})->name('success');
 
-Route::get('asesoria/', [Asesoria::class, 'index'])->name('asesoria');
+Route::get('asesoria', [Asesoria::class, 'index'])->middleware('auth')->name('asesoria');
 
-Route::get('calendar/{date}', [ManageDatesController::class, 'getTimeSlots'])->name('calendar.getTimeSlots');
-
-Route::post('calendar/captureClass', [ManageDatesController::class, 'handleForm'])->name('calendar.handleForm');
+Route::post('asesoria/bookClass', [ManageDatesController::class, 'handleForm'])->middleware('auth')->name('asesoria.handleForm');
 
 
 
+/* Route::post('/create-payment-intent', [StripeController::class, 'handleTransfer'])->name('StripeCheckout');
+Route::post('/webhook/stripe', [StripeWebhookController::class, 'handle']); */

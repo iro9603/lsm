@@ -31,42 +31,64 @@ document.addEventListener("DOMContentLoaded", function () {
             if($datepickerEl){
             const datepicker = new Datepicker($datepickerEl, options, instanceOptions);
 
-            let formatted = "";
+            let dateString = "";
 
             $datepickerEl.addEventListener('changeDate', async function (event) {
                 const date = event.detail.date;
-                formatted = date.toISOString().split('T')[0]; // → '2025-04-25'
+                dateString = date.toISOString().split('T')[0]; // → '2025-04-25'
 
 
-                axios.get(`/calendar/${formatted}`)
+                axios.get(`api/calendar/${dateString}`)
                     .then(function (response) {
 
                         // handle success
                         const slotContainer = document.getElementById('timetable');
+
                         const dateHeader = document.getElementById('dateHeader');
+
                         const dateInput = document.getElementById('dateInput');
+
                         const timeSlots = response.data;
-                        dateHeader.innerHTML = `${new Date(formatted + "T12:00:00").toDateString()}`;
-                        dateInput.value = `${formatted}`;
+
+                        dateHeader.innerHTML = `${new Date(dateString + "T12:00:00").toDateString()}`;
+
+                        dateInput.value = `${dateString}`;
+
                         if (timeSlots === undefined || timeSlots.length == 0) {
 
                             slotContainer.innerHTML = "";
 
-
-
                         } else {
+                            const today = new Date();
+
+                            const selectedDate = new Date(dateString);
 
                             slotContainer.innerHTML = "";
+
+                            const now = new Date();
+                            
                             timeSlots.forEach(slot => {
+                                
+
+                                const slotTime = slot.start + ':00'; // Ej. "11:00:00"
+
+                                const slotDateTime = new Date(`${dateString}T${slotTime}`);
+
+                                // Ver si hay que deshabilitar
+                                const isToday = selectedDate.toDateString() === today.toDateString();
+
+                                // compara solo la fecha sin tiempo
+                                const isBeforeToday = selectedDate < new Date(today.toDateString()); 
+                                const isPast = isBeforeToday || (isToday && slotDateTime < now);
 
                                 const listItem = document.createElement('li');
 
                                 listItem.innerHTML = `
-                                <input type="radio" id="${slot.start}" value="${slot.start}" class="hidden peer" name="timetable">
-                                <label for="${slot.start}"
-                                    class="label-style">
-                                    ${slot.start}
-                                </label>
+                                    <input type="radio" id="${slot.start}" value="${slotTime}" class="hidden peer" name="time" ${isPast ? 'disabled' : ''}>
+                                    <label for="${slot.start}"
+                                        class="label-style ${isPast ? 'opacity-50 cursor-not-allowed' : ''}">
+                                        ${slot.start}
+                                    </label>
                                 `;
                                 // Append the list item to the container
                                 slotContainer.appendChild(listItem);
@@ -88,15 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
               const form = document.getElementById("dateForm");
 
             form.addEventListener("submit", function (event) {
-
                 try {
-                    let timeInput = document.querySelector('input[name="timetable"]:checked');
-                    if (!formatted || formatted === "") {
+                    let timeInput = document.querySelector('input[name="time"]:checked');
+                    if (!dateString || dateString === "") {
                         Swal.fire({
                             icon: "error",
                             title: "Oops...",
                             text: "Debes elegir una fecha!",
-                            /* footer: '<a href="#">Why do I have this issue?</a>' */
                         });
                         event.preventDefault();
                         return;
@@ -106,7 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             icon: "error",
                             title: "Oops...",
                             text: "Debes elegir una hora para la clase!",
-                            /* footer: '<a href="#">Why do I have this issue?</a>' */
                         });
                         event.preventDefault();
                         return;

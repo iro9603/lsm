@@ -41,7 +41,7 @@ return [
 
     'stripe' => [
         'secret' => env('STRIPE_SECRET'),
-        'public' => env('STRIPE_PUBLIC'),
+        'key' => env('STRIPE_KEY'),
     ],
 
     'paypal' => [

@@ -12,8 +12,18 @@
                 </div>
             </div>
 
+            @if ($errors->any())
+                <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="col-span-1 lg:col-span-6">
-                <form action="{{ route('calendar.handleForm') }}" id="dateForm" method="POST">
+                <form action="{{ route('asesoria.handleForm') }}" id="dateForm" method="POST">
                     @csrf
                     <div
                         class="w-full p-6  bg-white border mt-8 border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
@@ -81,6 +91,7 @@
                                     class=" text-gray-900 dark:text-white text-base font-medium mb-3 text-center">
                                 </h3>
                                 <input type="hidden" id="dateInput" name="date" />
+                                <input type="hidden" name="email" value="{{  Auth::user()->email }}" />
                                 <button type="button" data-collapse-toggle="timetable"
                                     class="inline-flex items-center w-full py-2 px-5 me-2 justify-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                     <svg class="w-4 h-4 text-gray-800 dark:text-white me-2" aria-hidden="true"

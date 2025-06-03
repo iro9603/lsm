@@ -101,6 +101,10 @@
                                     </x-dropdown-link>
                                 @endcan
 
+                                <x-dropdown-link href="{{ route('classes.myClasses') }}">
+                                    Mis clases
+                                </x-dropdown-link>
+
                                 @can('access_dashboard')
                                     <x-dropdown-link href="{{ route('admin.dashboard') }}">
                                     Administrador
