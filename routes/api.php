@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\MercadoPagoWebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,3 +18,7 @@ Route::delete('/destroySlots/{id}', [\App\Http\Controllers\Admin\AvailableSlotsC
 Route::get('calendar/{date}', [ManageDatesController::class, 'getTimeSlots'])->name('user.getTimeSlots');
 
 Route::post('/mercadopago/webhook', [MercadoPagoWebhookController::class, 'handle']);
+
+Route::get('auth/google', [GoogleController::class, 'redirect']);
+Route::get('auth/google/callback', [GoogleController::class, 'callback']);
+

@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\ManageDatesController;
 use App\Http\Controllers\MercadoPagoController;
 use App\Http\Controllers\StripeController;
@@ -43,23 +44,10 @@ Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('checkout', [CheckOutController::class, 'index'])->middleware(CheckCartItems::class)->name('checkout.index');
 
 Route::get('prueba', function () {
-    $start = Carbon::createFromTimeString('00:00:00');
+    $googleObj = new GoogleController();
 
-    while ($start->lt(Carbon::createFromTimeString('23:59:59'))) {
-        $end = (clone $start)->addMinutes(30);
-
-        TimeSlot::create([
-            'start_time' => $start->format('H:i:s'),
-            'end_time' => $end->format('H:i:s'),
-        ]);
-
-        $start->addMinutes(30);
-    }
-
-    /* AvailableSlot::create([
-        'date' => '2025-05-11',
-        'time_slot_id' => 2
-    ]); */
+    /* $googleObj->createCalendarEvent($email, $date, $time); */
+    $googleObj->createCalendarEvent('riosirving03@gmail.com', '2025-06-03', '10:00');
 
 });
 

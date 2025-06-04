@@ -17,8 +17,11 @@ class MercadoPagoWebhookController extends Controller
 {
     public function handle(Request $request)
     {
+        \Log::info('Webhook recibido', ['payload' => $request->all()]);
 
         if ($request->type === 'payment') {
+            \Log::info('ID recibido en webhook:', ['payment_id' => $request->data['id']]);
+
             $paymentId = $request->data['id'];
 
             MercadoPagoConfig::setAccessToken(env('MP_ACCESS_TOKEN'));
@@ -30,6 +33,7 @@ class MercadoPagoWebhookController extends Controller
             list($email, $dateTime) = explode('|', $externalReference . '|');
 
             list($date, $time) = explode(' ', $dateTime . " ");
+
 
             if ($payment->status === 'approved') {
 
@@ -49,13 +53,21 @@ class MercadoPagoWebhookController extends Controller
                     $resultInsert = DB::table('bookings')->insert([
                         'user_id' => $user_id,
                         'available_slot_id' => $available_slot_id,
-                        'created_at' => $formatted
+                        'created_at' => now()
                     ]);
 
                     if ($resultInsert) {
                         AvailableSlot::where('id', $available_slot_id)->update([
                             'is_booked' => 1
                         ]);
+
+                        $googleObj = new GoogleController();
+
+
+
+                        $googleObj->createCalendarEvent($email, $date, $time);
+
+
                     }
 
 
@@ -65,6 +77,9 @@ class MercadoPagoWebhookController extends Controller
 
                     DB::rollBack(); // <= Rollback in case of an exception
                 }
+
+                // Manejo de google meet para enviar el vinculo de la sesion
+
             }
 
         }

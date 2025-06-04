@@ -50,7 +50,12 @@ return [
         'url' => env('PAYPAL_URL'),
         'token_url' => env('PAYPAL_URL') . '/v1/oauth2/token',
         'order_url' => env('PAYPAL_URL') . '/v2/checkout/orders',
-    ]
+    ],
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
 
 
 ];

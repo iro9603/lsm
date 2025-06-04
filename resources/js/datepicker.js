@@ -81,13 +81,24 @@ document.addEventListener("DOMContentLoaded", function () {
                                 const isBeforeToday = selectedDate < new Date(today.toDateString()); 
                                 const isPast = isBeforeToday || (isToday && slotDateTime < now);
 
+
+                                 const [hourStr, minuteStr] = slot.start.split(':');
+                                const dateForFormatting = new Date();
+                                dateForFormatting.setHours(parseInt(hourStr), parseInt(minuteStr || '0'), 0);
+
+                                const formattedTime = dateForFormatting.toLocaleTimeString('en-US', {
+                                    hour: 'numeric',
+                                    minute: '2-digit',
+                                    hour12: true
+                                }); // Ej. "8:30 AM"
+
                                 const listItem = document.createElement('li');
 
                                 listItem.innerHTML = `
                                     <input type="radio" id="${slot.start}" value="${slotTime}" class="hidden peer" name="time" ${isPast ? 'disabled' : ''}>
                                     <label for="${slot.start}"
                                         class="label-style ${isPast ? 'opacity-50 cursor-not-allowed' : ''}">
-                                        ${slot.start}
+                                        ${formattedTime}
                                     </label>
                                 `;
                                 // Append the list item to the container

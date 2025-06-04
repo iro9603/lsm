@@ -18,7 +18,7 @@
                 array(
                     "title" => "",
                     "quantity" => 1,
-                    "unit_price" => $total_con_comision
+                    "unit_price" => 2000 /* $total_con_comision */
                 )
             ),
             "external_reference" => $externalReference,
