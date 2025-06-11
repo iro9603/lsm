@@ -13,7 +13,7 @@
 ];
 @endphp
 
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class=" bg-indigo-950 shadow-md hover:bg-indigo-900">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -29,7 +29,7 @@
                 <div class="hidden space-x-8  sm:-my-px sm:ms-10 sm:flex ">
                     @foreach ($links as $item)
                     
-                        <x-nav-link class="text-xl" href="{{ $item['route'] }}" :active="$item['active']">
+                        <x-nav-link class="text-xl text-white hover:text-blue-800 hover:bg-blue-50  transition" href="{{ $item['route'] }}" :active="$item['active']">
                             {{ $item['name'] }}
                         </x-nav-link>
                     @endforeach
@@ -37,18 +37,13 @@
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-              
                 <div 
-                class="relative "
-                x-data="
-                {
-                count: {{ Cart::instance('shopping')->count() }}
-                }
-                "
+                class="relative mr-2"
+                x-data="{count: {{ Cart::instance('shopping')->count() }}}"
                 x-on:cart-updated.window="count = $event.detail[0]"
                 >
                     <a href="{{ route('cart.index') }}">
-                        <i class="fa-solid fa-cart-shopping text-xl text-gray-600"></i>
+                        <i class="fa-solid fa-cart-shopping text-2xl text-blue-600 hover:text-yellow-500 transition duration-150"></i>
                         <template x-if="count > 0">
                             <span 
                         x-show="count"
@@ -61,7 +56,6 @@
                 <!-- Settings Dropdown -->
                 <div class="ms-3 relative">
                     @auth
-                        
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
                                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
@@ -158,7 +152,7 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-yellow-500 focus:outline-none focus:bg-yellow-500 focus:text-white transition duration-150 ease-in-out">
                     <svg class="size-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -173,18 +167,24 @@
         <div class="pt-2 pb-3 space-y-1">
             @foreach ($links as $item)
                 
-                <x-responsive-nav-link href="{{ $item['route'] }}" :active="$item['active']">
+                <x-responsive-nav-link  class="{{ $item['active'] ? 'text-blue-500  bg-blue-50' : 'text-white' }}   px-4 py-2 rounded-md transition font-medium" 
+                href="{{ $item['route'] }}" :active="$item['active']">
                     {{ $item['name'] }}
                 </x-responsive-nav-link>
             @endforeach
 
-            <x-responsive-nav-link href="{{route('login')}}" >
-                Iniciar Sesión
-            </x-responsive-nav-link>
+            @auth
+            
 
-            <x-responsive-nav-link href="{{ route('register') }}" >
-                Registrarse
-            </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link class="{{ $item['active'] ? 'text-blue-500  bg-blue-50' : 'text-white' }}   px-4 py-2 rounded-md transition font-medium" href="{{route('login')}}" >
+                    Iniciar Sesión
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link class="{{ $item['active'] ? 'text-blue-500  bg-blue-50' : 'text-white' }}   px-4 py-2 rounded-md transition font-medium" href="{{ route('register') }}" >
+                    Registrarse
+                </x-responsive-nav-link>
+            @endauth
 
         </div>
 
@@ -200,15 +200,15 @@
                     @endif
 
                     <div>
-                        <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                        <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                        <div class="font-medium text-base text-yellow-500">{{ Auth::user()->name }}</div>
+                        <div class="font-medium text-sm text-gray-300">{{ Auth::user()->email }}</div>
                     </div>
                 </div>
             
 
                 <div class="mt-3 space-y-1">
                     <!-- Account Management -->
-                    <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
+                    <x-responsive-nav-link class="text-white  px-4 py-2 rounded-md transition font-medium" href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
 
@@ -216,7 +216,7 @@
                     <form method="POST" action="{{ route('logout') }}" x-data>
                         @csrf
 
-                        <x-responsive-nav-link href="{{ route('logout') }}"
+                        <x-responsive-nav-link class=" text-white  px-4 py-2 rounded-md transition font-medium" href="{{ route('logout') }}"
                                     @click.prevent="$root.submit();">
                             {{ __('Log Out') }}
                         </x-responsive-nav-link>

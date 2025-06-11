@@ -62,6 +62,8 @@ class CourseEnrolled extends Component
         $this->addCart();
 
         // Redireccionar a la pagina de checkout
+
+        return redirect()->route('cart.index');
     }
 
 

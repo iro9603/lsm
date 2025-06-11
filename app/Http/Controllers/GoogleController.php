@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Mail;
 
 class GoogleController extends Controller
 {
-    public function createCalendarEvent($email, $date, $time)
+    public function createCalendarEvent($user_name, $email, $date, $time)
     {
 
         try {
@@ -87,9 +87,9 @@ class GoogleController extends Controller
 
             \Log::info("Meet link a enviar por correo: " . $meetLink);
 
+            Mail::to($email)->send(new EventoAgendadoMail($user_name, $meetLink));
 
-            Mail::to($email)->send(new EventoAgendadoMail($meetLink));
-
+            return $meetLink;
 
         } catch (\Exception $e) {
             \Log::error("Error al crear evento en Google Calendar: " . $e->getMessage());

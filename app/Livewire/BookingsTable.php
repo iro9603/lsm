@@ -19,11 +19,9 @@ class BookingsTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Id", "id")
-                ->sortable(),
             Column::make("User id", "user_id")
                 ->sortable(),
-            Column::make('User name', 'user_id')
+            Column::make('Nombre de Usuario', 'user_id')
                 ->format(fn($value, $row) => optional($row->user)->name)
                 ->sortable(),
             Column::make("Available slot id", "available_slot_id")
@@ -32,7 +30,9 @@ class BookingsTable extends DataTableComponent
                 ->sortable(),
             Column::make("Updated at", "updated_at")
                 ->sortable(),
-            LinkColumn::make("Edit")->title(fn($row) => "Editar")->location(fn($row) => route('admin.bookings.edit', $row))
+            Column::make("Link", "link")
+                ->sortable(),
+            /* LinkColumn::make("Edit")->title(fn($row) => "Editar")->location(fn($row) => route('admin.bookings.edit', $row)) */
 
         ];
     }

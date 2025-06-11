@@ -54,9 +54,6 @@ class CourseController extends Controller
             })->first();
 
             if (!$lesson) {
-
-
-
                 $lesson = $lessons->first();
             }
 

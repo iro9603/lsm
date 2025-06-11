@@ -1,9 +1,13 @@
+
 document.addEventListener("DOMContentLoaded", function () {
+   
+    
  // set the target element of the input field
             const $datepickerEl = document.getElementById('datepicker-actions');
 
             // optional options with default values and callback functions
             const options = {
+                language: 'es',
                 defaultDatepickerId: null,
                 autohide: true,
                 format: 'dd/mm/yyyy',
@@ -30,6 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if($datepickerEl){
             const datepicker = new Datepicker($datepickerEl, options, instanceOptions);
+
+      
 
             let dateString = "";
 

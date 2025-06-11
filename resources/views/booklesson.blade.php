@@ -16,24 +16,21 @@
         $preference = $client->create([
             "items" => array(
                 array(
-                    "title" => "",
+                    "title" => "Clase",
                     "quantity" => 1,
-                    "unit_price" => 2000 /* $total_con_comision */
+                    "unit_price" => $total_con_comision
                 )
             ),
             "external_reference" => $externalReference,
 
-            'metadata' => [
-                "email" => $email,
-                "date" => $selectedDate,
-                "time" => $selectedTime
-            ],
+
             "back_urls" => [
                 "success" => route('success'),
                 "failure" => route('asesoria'),
                 "pending" => "https://www.tu-sitio/pending"
             ],
-            "notification_url" => "https://9204-189-136-27-196.ngrok-free.app/api/mercadopago/webhook",
+            // Recordar modificar esto cada vez que se incialice ngrok para que mercadopago mande la notificacion
+            "notification_url" => env('APP_URL') . "/api/mercadopago/webhook",
             "auto_return" => "approved"
         ]);
 
@@ -90,30 +87,7 @@
 
 
 
-
-        {{-- <div class="grid grid-cols-1 md:grid-cols-7 gap-4 mb-4 mt-4">
-            <div class="col-span-4 card">
-
-            </div>
-            <div class="col-span-3  card p-4">
-
-                <div class="flex flex-col justify-center items-center">
-                    <label for="countries"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione método de
-                        pago</label>
-                </div>
-
-                <div>
-                    <div id="walletBrick_container"></div>
-                </div>
-            </div>
-        </div> --}}
-
-
     </x-container>
-
-    {{--
-    <script src="https://js.stripe.com/v3/"></script> --}}
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script>
         // Configure sua chave pública do Mercado Pago

@@ -1,11 +1,11 @@
 <div>
-    <h1 class="text-xl font-semibold mb-2">
+    <h1 class="text-xl font-semibold mb-2 text-gray-200">
         Carrito de compras
     </h1>
 
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div class="col-span-1 lg:col-span-3">
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-4">
+            <div class="bg-gray-100 rounded-lg shadow-lg p-6 mb-4">
                 <ul class="space-y-4">
                     @forelse (Cart::instance('shopping')->content() as $item)
 
@@ -51,7 +51,7 @@
 
         </div>
         <div class="col-span-1 lg:col-span-2">
-            <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="bg-gray-100 rounded-lg shadow-lg p-6">
                 <h2 class="text-2xl font-semibold">Resumen</h2>
                 <div class="flex justify-between items-center">
                     <p class="text-2xl">Total:</p>

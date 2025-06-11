@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <p>Hola,</p>
+    <p>Hola,{{ $user_name }}</p>
 
     <p>Tu reunión ha sido agendada exitosamente.</p>
 

@@ -13,16 +13,15 @@ class EventoAgendadoMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-
-
+    public $user_name;
     public $meetLink;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($meetLink)
+    public function __construct($user_name, $meetLink)
     {
-
+        $this->user_name = $user_name;
         $this->meetLink = $meetLink;
     }
 

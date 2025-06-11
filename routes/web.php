@@ -4,11 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\ManageDatesController;
-use App\Http\Controllers\MercadoPagoController;
-use App\Http\Controllers\StripeController;
-use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\CheckCartItems;
 use App\Livewire\Asesoria;
@@ -43,15 +39,14 @@ Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 
 Route::get('checkout', [CheckOutController::class, 'index'])->middleware(CheckCartItems::class)->name('checkout.index');
 
-Route::get('prueba', function () {
+/* Route::get('prueba', function () {
     $googleObj = new GoogleController();
 
-    /* $googleObj->createCalendarEvent($email, $date, $time); */
+  
     $googleObj->createCalendarEvent('riosirving03@gmail.com', '2025-06-03', '10:00');
 
-});
+}); */
 
-/* Route::post('/create-spei-payment', [PaymentController::class, 'createSPEIPayment'])->name('checkout.payment'); */
 
 Route::post('checkout/createPaypalOrder', [CheckOutController::class, 'createPaypalOrder'])->name('checkout.createPaypalOrder');
 
@@ -67,5 +62,5 @@ Route::post('asesoria/bookClass', [ManageDatesController::class, 'handleForm'])-
 
 
 
-/* Route::post('/create-payment-intent', [StripeController::class, 'handleTransfer'])->name('StripeCheckout');
-Route::post('/webhook/stripe', [StripeWebhookController::class, 'handle']); */
+
+

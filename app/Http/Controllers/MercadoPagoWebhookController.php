@@ -10,6 +10,7 @@ use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\MercadoPagoConfig;
 
 use Carbon\Carbon;
+
 use Illuminate\Support\Facades\DB;
 
 
@@ -20,15 +21,19 @@ class MercadoPagoWebhookController extends Controller
         \Log::info('Webhook recibido', ['payload' => $request->all()]);
 
         if ($request->type === 'payment') {
-            \Log::info('ID recibido en webhook:', ['payment_id' => $request->data['id']]);
+
 
             $paymentId = $request->data['id'];
 
             MercadoPagoConfig::setAccessToken(env('MP_ACCESS_TOKEN'));
 
             $paymentClient = new PaymentClient();
+
             $payment = $paymentClient->get($paymentId);
+
+
             $externalReference = $payment->external_reference ?? '';
+
 
             list($email, $dateTime) = explode('|', $externalReference . '|');
 
@@ -44,19 +49,24 @@ class MercadoPagoWebhookController extends Controller
 
                     $user_id = DB::table('users')->where('email', $email)->value('id');
 
+                    $user_name = DB::table('users')->where('id', $user_id)->value('name');
+
                     $available_slot_id = DB::table('available_slots')->where('time_slot_id', $time_slot_id)->where('date', $date)->where('is_booked', 0)->where('is_blocked', 0)->value('id');
 
                     $dateApprovedRaw = $payment->date_approved;
                     $carbon = Carbon::parse($dateApprovedRaw)->setTimezone('America/Mexico_City');
                     $formatted = $carbon->format('Y-m-d H:i:s');
 
-                    $resultInsert = DB::table('bookings')->insert([
+
+
+                    $booking_id = DB::table('bookings')->insertGetId([
                         'user_id' => $user_id,
                         'available_slot_id' => $available_slot_id,
-                        'created_at' => now()
+                        'created_at' => now(),
+                        'updated_at' => now()
                     ]);
 
-                    if ($resultInsert) {
+                    if ($booking_id) {
                         AvailableSlot::where('id', $available_slot_id)->update([
                             'is_booked' => 1
                         ]);
@@ -65,8 +75,14 @@ class MercadoPagoWebhookController extends Controller
 
 
 
-                        $googleObj->createCalendarEvent($email, $date, $time);
+                        $returnedLinkMeet = $googleObj->createCalendarEvent($user_name, $email, $date, $time);
 
+
+                        // Actualizar el booking con la liga
+                        DB::table('bookings')->where('id', $booking_id)->update([
+                            'link' => $returnedLinkMeet,
+                            'updated_at' => now(),
+                        ]);
 
                     }
 

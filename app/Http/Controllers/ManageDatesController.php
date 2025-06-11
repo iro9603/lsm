@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 
 class ManageDatesController extends Controller
 {
-    public function getTimeSlots($date)
+    public function getTimeSlotsperDay($date)
     {
         // Example: Parse and validate the date
         try {
@@ -21,6 +21,34 @@ class ManageDatesController extends Controller
         }
         $Slots = AvailableSlot::with('timeSlot')
             ->where('date', $parsedDate)
+            ->where('is_blocked', false)
+            ->whereDoesntHave('booking') // If using `bookings` table
+            ->get();
+
+        $formattedSlots = $Slots->map(function ($slot) {
+            if (!$slot->timeSlot) {
+                return null; // or handle it gracefully
+            }
+
+            return [
+                'slot_id' => $slot->id,
+                'date' => $slot->date,
+                'start' => Carbon::createFromFormat('H:i:s', $slot->timeSlot->start_time)->format('H:i'),
+                'end' => Carbon::createFromFormat('H:i:s', $slot->timeSlot->end_time)->format('H:i'),
+            ];
+        })->filter()->values()->toArray();
+
+
+        // Return formatted slots as a JSON response
+        return response()->json($formattedSlots);
+    }
+
+
+    public function getTimeSlots(Request $request)
+    {
+        // Example: Parse and validate the date
+
+        $Slots = AvailableSlot::with('timeSlot')
             ->where('is_blocked', false)
             ->whereDoesntHave('booking') // If using `bookings` table
             ->get();

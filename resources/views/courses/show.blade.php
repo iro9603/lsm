@@ -5,7 +5,7 @@
 
                 {{-- Portada --}}
                 <div>
-                    <h1 class="text-2xl font-semibold">{{ $course->title }}</h1>
+                    <h1 class="text-3xl tracking-tight font-semibold text-gray-100">{{ $course->title }}</h1>
                     <p class="mb-2">{{ $course->summary }}</p>
 
                     <figure>
@@ -13,14 +13,16 @@
                     </figure>
                 </div>
 
+                <hr class="my-6 border-gray-300">
+
                 {{-- Objetivos --}}
 
                 <div class="mb-8">
-                    <h2 class="text-2xl font-semibold mb-4">
+                    <h2 class="text-3xl tracking-tight font-semibold mb-4 text-gray-100">
                         Objetivos del curso
                     </h2>
 
-                    <div class="bg-white rounded-lg shadow p-6">
+                    <div class="bg-gray-100 rounded-lg shadow p-6">
                         <ul class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-gray-800">
                             @foreach ($course->goals as $goal)
                                 <li class="flex space-x-4">
@@ -34,18 +36,19 @@
                     </div>
                 </div>
 
+                <hr class="my-6 border-gray-300">
 
                 {{-- Curriculum --}}
 
                 <div class="mb-8">
-                    <h2 class="text-2xl font-semibold mb-4">
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-100">
                         Temario del curso
                     </h2>
 
                     <ul class="space-y-4">
                         @foreach ($course->sections as $section)
                             <li x-data="{open:false}">
-                                <div class="bg-white rounded-lg">
+                                <div class="bg-gray-100 rounded-lg">
 
                                     <button x-on:click="open = !open" class="flex w-full p-4 bg-gray-50 text-left border-b">
                                         <span class="text-xl font-semibold">
@@ -65,7 +68,7 @@
                                                     <a class="flex" href="{{ route('courses.status', [$course, $lesson]) }}">
                                                         <i class="far fa-play-circle text-blue-500 mt-0.5 mr-2"></i>
 
-                                                        <span class="font-semibold text-gray-600 hover:blue  text-sm">
+                                                        <span class="font-semibold text-gray-600 hover:text-blue-500 text-sm">
                                                             {{ $lesson->name }}
                                                         </span>
                                                     </a>
@@ -81,10 +84,11 @@
 
                 </div>
 
+                <hr class="my-6 border-gray-300">
                 {{-- Requisitos --}}
 
                 <div class="mb-8">
-                    <h2 class="text-2xl font-semibold mb-4">
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-100">
                         Requisitos del curso
                     </h2>
 
@@ -96,11 +100,12 @@
                         @endforeach
                     </ul>
                 </div>
+                <hr class="my-6 border-gray-300">
 
                 {{-- Descripcion --}}
 
                 <div class="mb-8">
-                    <h2 class="text-2xl font-semibold mb-4">
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-100">
                         Descripción
                     </h2>
 
@@ -122,7 +127,7 @@
             </div>
 
             <div class="col-span-1 order-1 lg:order-2">
-                <div class="bg-white rounded-lg shadow p-6">
+                <div class="bg-gray-100 rounded-lg shadow p-6">
                     <div class="mb-4">
 
 
