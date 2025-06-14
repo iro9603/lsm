@@ -3,7 +3,7 @@
         <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     @endpush
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
         <div class="col-span-1 lg:col-span-2">
 
             @if (Gate::allows('enrolled', $course) || $current->is_preview)
@@ -46,7 +46,7 @@
 
 
 
-            <h1 class="text-3xl font-semibold mt-4">
+            <h1 class="text-3xl font-semibold mt-4 text-gray-200">
                 {{ $orderLessons->search($current['id']) + 1 }}. {{ $current->name }}
             </h1>
 
@@ -58,12 +58,12 @@
             @endif
 
             @auth
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2 text-gray-200">
                     <x-toggle wire:model="completed" label="Marcar esta unidad como culminada" />
                 </div>
             @endauth
 
-            <div class="bg-white shadow-xl rounded-lg px-6 py-4 mt-2">
+            <div class="bg-gray-200 shadow-xl rounded-lg px-6 py-4 mt-2">
                 <div class="flex justify-between">
                     <button wire:click="previousLesson()" class="font-bold">Tema anterior</button>
                     <button wire:click="nextLesson()" class="font-bold">Siguiente tema</button>
@@ -72,7 +72,7 @@
 
         </div>
         <div class="col-span-1">
-            <aside class="card mb-4">
+            <aside class="card mb-4 bg-gray-200">
                 <h1 class="text-2xl leading-8 text-center mb-4">
                     <a class="hover:text-blue-600" href="{{ route('courses.show', $course) }}">
                         {{ $course->title }}

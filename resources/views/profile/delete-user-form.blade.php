@@ -1,10 +1,10 @@
 <x-action-section>
     <x-slot name="title">
-        {{ __('Delete Account') }}
+        <div class="text-gray-100">{{ __('Delete Account') }}</div>
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Permanently delete your account.') }}
+        <div class="text-gray-400"> {{ __('Permanently delete your account.') }} </div>
     </x-slot>
 
     <x-slot name="content">
@@ -27,13 +27,11 @@
             <x-slot name="content">
                 {{ __('Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
 
-                <div class="mt-4" x-data="{}" x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)">
-                    <x-input type="password" class="mt-1 block w-3/4"
-                                autocomplete="current-password"
-                                placeholder="{{ __('Password') }}"
-                                x-ref="password"
-                                wire:model="password"
-                                wire:keydown.enter="deleteUser" />
+                <div class="mt-4" x-data="{}"
+                    x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)">
+                    <x-input type="password" class="mt-1 block w-3/4" autocomplete="current-password"
+                        placeholder="{{ __('Password') }}" x-ref="password" wire:model="password"
+                        wire:keydown.enter="deleteUser" />
 
                     <x-input-error for="password" class="mt-2" />
                 </div>
