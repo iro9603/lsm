@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('welcome_message')->nullable();
             $table->text('goodbye_message')->nullable();
             $table->text('observation')->nullable();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');;
             $table->foreignId('level_id')->constrained();
             $table->foreignId('category_id')->constrained();
             $table->foreignId('price_id')->constrained();

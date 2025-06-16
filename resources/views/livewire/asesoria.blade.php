@@ -1,16 +1,16 @@
 <x-app-layout>
     @push('css')
 
-        <link rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs4.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs4.min.css" />
 
-        <style>
-            .highlight-date {
-                background-color: rgb(34 197 94 / var(--tw-bg-opacity, 1)) !important;
-                color: white;
-                border-radius: 50%;
-            }
-        </style>
+    <style>
+        .highlight-date {
+            background-color: rgb(34 197 94 / var(--tw-bg-opacity, 1)) !important;
+            color: white;
+            border-radius: 50%;
+        }
+    </style>
     @endpush
     <x-container>
         <div class="grid grid-cols-1 lg:grid-cols-8 gap-6 mb-3">
@@ -60,13 +60,13 @@
             </div>
 
             @if ($errors->any())
-                <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-                    <ul class="list-disc pl-5">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
 
             <div class="col-span-1 lg:col-span-6">
@@ -89,8 +89,8 @@
                                         d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span
-                                    class="text-gray-200 dark:text-white text-base font-medium">{{ date('d/m/y') }}</span>
+                                <span class="text-gray-200 dark:text-white text-base font-medium">{{ date('d/m/y')
+                                    }}</span>
                             </div>
                             <div class="flex items-center">
                                 <svg class="w-5 h-5 text-gray-400 me-2" aria-hidden="true"
@@ -105,27 +105,25 @@
                         </div>
                         <div class="flex justify-center items-center space-x-4 rtl:space-x-reverse mb-5">
                             <div>
-                                <div class="text-base font-normal text-gray-400 dark:text-gray-400 mb-2">Participantes
+                                <div class="text-base font-normal text-gray-200 dark:text-gray-400 mb-2">Participantes
                                 </div>
-                                <div class="flex -space-x-4 rtl:space-x-reverse">
+                                <div class="flex space-x-1 rtl:space-x-reverse">
                                     <img class="w-8 h-8 border border-white rounded-full dark:border-gray-800"
-                                        src="/docs/images/people/profile-picture-5.jpg" alt="">
-                                    <img class="w-8 h-8 border border-white rounded-full dark:border-gray-800"
-                                        src="/docs/images/people/profile-picture-2.jpg" alt="">
+                                        src="{{Auth::user()->profile_photo_url }}" alt="">
+
                                     <img class="w-8 h-8 border border-white rounded-full dark:border-gray-800"
                                         src="/docs/images/people/profile-picture-3.jpg" alt="">
-                                    <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-700 border border-white rounded-full hover:bg-gray-600 dark:border-gray-800"
-                                        href="#">+99</a>
+
                                 </div>
                             </div>
                             <div>
-                                <div class="text-base font-normal text-gray-400 dark:text-gray-400 mb-3">Duración</div>
-                                <span class="text-gray-400 dark:text-white text-base font-medium block">50 min</span>
+                                <div class="text-base font-normal text-gray-200 dark:text-gray-200 mb-3">Duración</div>
+                                <span class="text-gray-200 dark:text-white text-base font-medium block">50 min</span>
                             </div>
                             <div>
-                                <div class="text-base font-normal text-gray-400 dark:text-gray-400 mb-3">Tipo de reunión
+                                <div class="text-base font-normal text-gray-200 dark:text-gray-200 mb-3">Tipo de reunión
                                 </div>
-                                <span class="text-gray-400 dark:text-white text-base font-medium block">Web
+                                <span class="text-gray-200 dark:text-gray-200 text-base font-medium block">Web
                                     conference</span>
                             </div>
                         </div>
@@ -169,9 +167,9 @@
 
 
     @push('js')
-        <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
-        <script>
-            let fechasConHorarios = [];
+    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
+    <script>
+        let fechasConHorarios = [];
 
             async function cargarFechasConHorarios() {
                 try {
@@ -367,8 +365,8 @@
                     }
                 }
             });
-        </script>
+    </script>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @endpush
 </x-app-layout>

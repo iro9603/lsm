@@ -51,8 +51,8 @@
             class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
             data-carousel-prev>
             <span
-                class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-yellow-400 hover:bg-yellow-300 text-black shadow-md group-focus:ring-4 group-focus:ring-yellow-300">
-                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                class="inline-flex items-center justify-center w-7 h-7 md:w-10 md:h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                <svg class="w-3 h-3 md:w-4 md:h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M5 1 1 5l4 4" />
@@ -64,8 +64,8 @@
             class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
             data-carousel-next>
             <span
-                class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-yellow-400 hover:bg-yellow-300 text-black shadow-md group-focus:ring-4 group-focus:ring-yellow-300">
-                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                class="inline-flex items-center justify-center w-7 h-7 md:w-10 md:h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                <svg class="w-3 h-3 md:w-4 md:h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="m1 9 4-4-4-4" />
@@ -86,13 +86,13 @@
 
                 <li
                     class="bg-indigo-900 rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-xl border border-indigo-800">
-                    <a href="">
+                    <a href="{{ route('courses.index') }}">
                         <img class="aspect-[16/9] object-center
                         object-cover rounded-lg" src="{{ asset('img/welcome/onlinecourses.jpg') }}" alt="">
                     </a>
                     <h1
                         class="text-xl font-semibold text-gray-100 hover:text-yellow-400 transition-colors text-center mb-2">
-                        <a href="">Cursos online</a>
+                        <a href="{{ route('courses.index') }}">Cursos online</a>
                     </h1>
 
                     <p class="text-indigo-300 text-sm leading-relaxed text-center">
@@ -102,7 +102,7 @@
 
                 <li
                     class="bg-indigo-900 rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-xl border border-indigo-800">
-                    <a href="">
+                    <a href="{{ route('asesoria') }}">
                         <img class="aspect-[16/9] object-center
                         object-cover rounded-lg" src="{{ asset('img/welcome/tutoring.jpg') }}" alt="">
                     </a>
@@ -163,63 +163,63 @@
 
             <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach ($courses as $course)
-                    <li>
-                        <div class=" rounded-lg overflow-hidden bg-indigo-800">
-                            <figure>
-                                <img class="  w-full aspect-video object-cover object-center" src="{{ $course->image }}"
-                                    alt="{{ $course->title }}">
-                            </figure>
+                <li>
+                    <div class=" rounded-lg overflow-hidden bg-indigo-800">
+                        <figure>
+                            <img class="  w-full aspect-video object-cover object-center" src="{{ $course->image }}"
+                                alt="{{ $course->title }}">
+                        </figure>
 
-                            <div class="px-6 pt-4 pb-5">
-                                <h1 class="line-clamp-2 text-lg leading-5 min-h-[42px] mb-1 text-gray-100">
-                                    <a href="{{ route('courses.show', $course) }}">
-                                        {{ $course->title }}
-                                    </a>
-                                </h1>
-                                <p class=" text-sm mb-1 text-gray-100">
-                                    Prof: {{ $course->teacher->name }}
-                                </p>
+                        <div class="px-6 pt-4 pb-5">
+                            <h1 class="line-clamp-2 text-lg leading-5 min-h-[42px] mb-1 text-gray-100">
+                                <a href="{{ route('courses.show', $course) }}">
+                                    {{ $course->title }}
+                                </a>
+                            </h1>
+                            <p class=" text-sm mb-1 text-gray-100">
+                                Prof: {{ $course->teacher->name }}
+                            </p>
 
-                                <ul class="text-xs flex space-x-1 mb-1">
-                                    <li>
-                                        <i class="fas fa-star  text-yellow-400"></i>
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-star  text-yellow-400"></i>
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-star  text-yellow-400"></i>
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-star  text-yellow-400"></i>
-                                    </li>
-                                </ul>
+                            <ul class="text-xs flex space-x-1 mb-1">
+                                <li>
+                                    <i class="fas fa-star  text-yellow-400"></i>
+                                </li>
+                                <li>
+                                    <i class="fas fa-star  text-yellow-400"></i>
+                                </li>
+                                <li>
+                                    <i class="fas fa-star  text-yellow-400"></i>
+                                </li>
+                                <li>
+                                    <i class="fas fa-star  text-yellow-400"></i>
+                                </li>
+                            </ul>
 
-                                <p class="font-semibold mb-2 text-gray-100">
-                                    @if ($course->price->value == 0)
-                                        <span class="text-green-500">
-                                            Gratis
-                                        </span>
-                                    @else
+                            <p class="font-semibold mb-2 text-gray-100">
+                                @if ($course->price->value == 0)
+                                <span class="text-green-500">
+                                    Gratis
+                                </span>
+                                @else
 
-                                        <span class=" text-gray-300">
-                                            {{ number_format($course->price->value, 2) }}
-                                        </span>
+                                <span class=" text-gray-300">
+                                    {{ number_format($course->price->value, 2) }}
+                                </span>
 
-                                    @endif
-                                </p>
+                                @endif
+                            </p>
 
-                                <a class="btn btn-blue block w-full text-center"
-                                    href="{{ route('courses.show', $course) }}"> Más información</a>
-                            </div>
+                            <a class="btn btn-blue block w-full text-center"
+                                href="{{ route('courses.show', $course) }}"> Más información</a>
                         </div>
-                    </li>
+                    </div>
+                </li>
                 @endforeach
             </ul>
         </x-container>
     </section>
 
     @push('js')
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     @endpush
 </x-app-layout>

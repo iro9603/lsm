@@ -29,7 +29,7 @@
 <body class="font-sans antialiased">
     <x-banner />
 
-    <div class="min-h-screen bg-indigo-950">
+    <div class="bg-gradient-to-b from-[#1a1440] to-[#2c235d] min-h-screen">
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
