@@ -19,7 +19,3 @@ Route::get('calendar/{date}', [ManageDatesController::class, 'getTimeSlotsperDay
 Route::get('calendar/', [ManageDatesController::class, 'getTimeSlots']);
 
 Route::post('/mercadopago/webhook', [MercadoPagoWebhookController::class, 'handle']);
-
-Route::get('auth/google', [GoogleController::class, 'redirect']);
-Route::get('auth/google/callback', [GoogleController::class, 'callback']);
-

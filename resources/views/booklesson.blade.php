@@ -1,38 +1,38 @@
 <x-app-layout>
 
     @php
-        \MercadoPago\MercadoPagoConfig::setAccessToken(env('MP_ACCESS_TOKEN'));
-        $client = new \MercadoPago\Client\Preference\PreferenceClient();
-        // Calcular el total
-        $tarifa_porcentual = 0.0349;  // 3.49%
-        $tarifa_fija = 4.00;          // $4.00 fijos
+    \MercadoPago\MercadoPagoConfig::setAccessToken(env('MP_ACCESS_TOKEN'));
+    $client = new \MercadoPago\Client\Preference\PreferenceClient();
+    // Calcular el total
+    $tarifa_porcentual = 0.0349; // 3.49%
+    $tarifa_fija = 4.00; // $4.00 fijos
 
-        $precio_base = 200;  // el precio real de tu producto/servicio
+    $precio_base = 200; // el precio real de tu producto/servicio
 
-        $comision = ($precio_base * $tarifa_porcentual) + $tarifa_fija;
-        $total_con_comision = $precio_base + $comision;
+    $comision = ($precio_base * $tarifa_porcentual) + $tarifa_fija;
+    $total_con_comision = $precio_base + $comision;
 
-        $externalReference = $email . '|' . $selectedDate . ' ' . $selectedTime;
-        $preference = $client->create([
-            "items" => array(
-                array(
-                    "title" => "Clase",
-                    "quantity" => 1,
-                    "unit_price" => $total_con_comision
-                )
-            ),
-            "external_reference" => $externalReference,
+    $externalReference = $email . '|' . $selectedDate . ' ' . $selectedTime;
+    $preference = $client->create([
+    "items" => array(
+    array(
+    "title" => "Clase",
+    "quantity" => 1,
+    "unit_price" => $total_con_comision
+    )
+    ),
+    "external_reference" => $externalReference,
 
 
-            "back_urls" => [
-                "success" => route('success'),
-                "failure" => route('asesoria'),
-                "pending" => "https://www.tu-sitio/pending"
-            ],
-            // Recordar modificar esto cada vez que se incialice ngrok para que mercadopago mande la notificacion
-            "notification_url" => env('APP_URL') . "/api/mercadopago/webhook",
-            "auto_return" => "approved"
-        ]);
+    "back_urls" => [
+    "success" => route('success'),
+    "failure" => route('asesoria'),
+    "pending" => "https://www.tu-sitio/pending"
+    ],
+    // Recordar modificar esto cada vez que se incialice ngrok para que mercadopago mande la notificacion
+    "notification_url" => env('APP_URL') . "/api/mercadopago/webhook",
+    "auto_return" => "approved"
+    ]);
 
     @endphp
     <x-container>
@@ -67,8 +67,8 @@
 
                     <div class="border-t pt-4 mt-4 flex justify-between items-center">
                         <span class="text-xl font-semibold text-gray-800">Total:</span>
-                        <span
-                            class="text-xl font-bold text-indigo-600">${{ number_format($total_con_comision, 2) }}</span>
+                        <span class="text-xl font-bold text-indigo-600">${{ number_format($total_con_comision, 2)
+                            }}</span>
                     </div>
 
                     <div class="mt-6 text-right">
@@ -79,7 +79,8 @@
             <div class="col-span-3 bg-white shadow-xl  rounded-2xl p-4">
 
                 <div class="flex flex-col justify-center items-center">
-
+                    <span>Tienes 15 minutos para poder completar el pago. Cuando se cumplan los 15minutos, se liberará
+                        el horario.</span>
                 </div>
 
             </div>
@@ -90,6 +91,20 @@
     </x-container>
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script>
+        const expirationTime = new Date("{{ $blocked_until }}");
+        const now = new Date();
+        const timeRemaining = expirationTime - now; // milisegundos
+
+        if (timeRemaining > 0) {
+            setTimeout(() => {
+                alert("El tiempo para completar el pago ha expirado. El horario se ha liberado.");
+                window.location.href = "{{ route('asesoria') }}"; // Ajusta esta ruta
+            }, timeRemaining);
+        } else {
+            // Si ya expiró por cualquier razón (por reloj desincronizado)
+            window.location.href = "{{ route('asesoria') }}";
+        }
+
         // Configure sua chave pública do Mercado Pago
         const publicKey = document.getElementById('mercado-pago-public-key').value;
         // Configure o ID de preferência que você deve receber do seu backend

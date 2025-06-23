@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\ManageDatesController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\CheckCartItems;
@@ -60,7 +61,5 @@ Route::get('asesoria', [Asesoria::class, 'index'])->middleware('auth')->name('as
 
 Route::post('asesoria/bookClass', [ManageDatesController::class, 'handleForm'])->middleware('auth')->name('asesoria.handleForm');
 
-
-
-
-
+Route::get('auth/google', [GoogleController::class, 'redirect']);
+Route::get('auth/google/callback', [GoogleController::class, 'callback']);

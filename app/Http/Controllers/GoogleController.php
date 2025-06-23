@@ -8,7 +8,6 @@ use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
 use Google_Service_Calendar_EventDateTime;
 use Google_Service_Calendar_ConferenceData;
-use Google_Service_Calendar_ConferenceDataCreateRequest;
 use Google_Service_Calendar_CreateConferenceRequest;
 use Illuminate\Http\Request;
 
@@ -23,12 +22,12 @@ class GoogleController extends Controller
         try {
 
             $client = new Google_Client();
-            $client->setAuthConfig(storage_path('app/google-oauth/credentials.json'));
+            $client->setAuthConfig(storage_path('app/private/google-oauth/credentials.json'));
             $client->addScope(Google_Service_Calendar::CALENDAR);
             $client->setAccessType('offline');
 
             // Aquí debes recuperar el token del usuario
-            $accessToken = json_decode(file_get_contents(storage_path('app/google-oauth/token.json')), true);
+            $accessToken = json_decode(file_get_contents(storage_path('app/private/google-oauth/token.json')), true);
             $client->setAccessToken($accessToken);
 
             if ($client->isAccessTokenExpired()) {
@@ -38,7 +37,7 @@ class GoogleController extends Controller
 
                 // Guardar el nuevo token
                 file_put_contents(
-                    storage_path('app/google-oauth/token.json'),
+                    storage_path('app/private/google-oauth/token.json'),
                     json_encode($client->getAccessToken())
                 );
             }
@@ -90,11 +89,44 @@ class GoogleController extends Controller
             Mail::to($email)->send(new EventoAgendadoMail($user_name, $meetLink));
 
             return $meetLink;
-
         } catch (\Exception $e) {
             \Log::error("Error al crear evento en Google Calendar: " . $e->getMessage());
         }
-
     }
 
+    public function redirect()
+    {
+        $client = new Google_Client();
+        $client->setClientId(env('GOOGLE_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_CLIENT_SECRET'));
+        $client->setRedirectUri(env('GOOGLE_REDIRECT_URI'));
+        $client->addScope(Google_Service_Calendar::CALENDAR);
+
+        return redirect()->away($client->createAuthUrl());
+    }
+
+    public function callback(Request $request)
+    {
+        $client = new Google_Client();
+        $client->setClientId(env('GOOGLE_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_CLIENT_SECRET'));
+        $client->setRedirectUri(env('GOOGLE_REDIRECT_URI'));
+
+        $code = $request->input('code');
+
+        if (!$code) {
+            return response()->json(['error' => 'No authorization code received']);
+        }
+
+        $token = $client->fetchAccessTokenWithAuthCode($code);
+
+        if (isset($token['error'])) {
+            return response()->json(['error' => $token['error']]);
+        }
+
+        \Storage::disk('local')->put('google-oauth/token.json', json_encode($token));
+
+
+        return '✅ Token guardado correctamente.';
+    }
 }

@@ -9,7 +9,6 @@ use MercadoPago\Client\Payment\PaymentClient;
 
 use MercadoPago\MercadoPagoConfig;
 
-use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
 
@@ -41,7 +40,7 @@ class MercadoPagoWebhookController extends Controller
 
 
             if ($payment->status === 'approved') {
-
+                \Log::info('Entro al flujo para insertar');
                 try {
                     DB::beginTransaction();
 
@@ -53,40 +52,41 @@ class MercadoPagoWebhookController extends Controller
 
                     $available_slot_id = DB::table('available_slots')->where('time_slot_id', $time_slot_id)->where('date', $date)->where('is_booked', 0)->where('is_blocked', 0)->value('id');
 
-                    $dateApprovedRaw = $payment->date_approved;
-                    $carbon = Carbon::parse($dateApprovedRaw)->setTimezone('America/Mexico_City');
-                    $formatted = $carbon->format('Y-m-d H:i:s');
 
-
-
-                    $booking_id = DB::table('bookings')->insertGetId([
-                        'user_id' => $user_id,
-                        'available_slot_id' => $available_slot_id,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ]);
-
-                    if ($booking_id) {
-                        AvailableSlot::where('id', $available_slot_id)->update([
-                            'is_booked' => 1
+                    if ($available_slot_id !== null) {
+                        $booking_id = DB::table('bookings')->insertGetId([
+                            'user_id' => $user_id,
+                            'available_slot_id' => $available_slot_id,
+                            'created_at' => now(),
+                            'updated_at' => now()
                         ]);
 
-                        $googleObj = new GoogleController();
+                        if ($booking_id) {
+                            $slot = AvailableSlot::find($available_slot_id);
+                            $slot->is_booked = true;
+                            $slot->is_temporarily_blocked = false;
+                            $slot->temporarily_blocked_until = null;
+                            $slot->save();
+                            /* AvailableSlot::where('id', $available_slot_id)->update([
+                                'is_booked' => 1
+                            ]); */
+
+                            $googleObj = new GoogleController();
+
+                            $returnedLinkMeet = $googleObj->createCalendarEvent($user_name, $email, $date, $time);
 
 
-
-                        $returnedLinkMeet = $googleObj->createCalendarEvent($user_name, $email, $date, $time);
-
-
-                        // Actualizar el booking con la liga
-                        DB::table('bookings')->where('id', $booking_id)->update([
-                            'link' => $returnedLinkMeet,
-                            'updated_at' => now(),
-                        ]);
-
+                            // Actualizar el booking con la liga
+                            DB::table('bookings')->where('id', $booking_id)->update([
+                                'link' => $returnedLinkMeet,
+                                'updated_at' => now(),
+                            ]);
+                        } else {
+                            \Log::info("Error, no se inserto");
+                        }
+                    } else {
+                        \Log::info("Error, slot id no encontrado");
                     }
-
-
                     DB::commit(); // <= Commit the changes
                 } catch (\Exception $e) {
                     report($e);
@@ -97,10 +97,8 @@ class MercadoPagoWebhookController extends Controller
                 // Manejo de google meet para enviar el vinculo de la sesion
 
             }
-
         }
 
         return response()->json(['status' => 'ok'], 200);
-
     }
 }
