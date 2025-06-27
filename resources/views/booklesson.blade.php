@@ -39,7 +39,7 @@
         <!-- Hidden input to store your integration public key -->
         <input type="hidden" id="mercado-pago-public-key" value="APP_USR-4c8a433b-f8fb-4e80-a192-0fcf80c456f7">
 
-        <div class="grid grid-cols-1 md:grid-cols-7 gap-4 mb-4 mt-4">
+        <div class="grid grid-cols-1 md:grid-cols-7 gap-4 mb-7 mt-4">
             <div class="col-span-4 ">
                 <div class="max-w-3xl mx-auto p-6 bg-white shadow-xl rounded-2xl">
                     <h2 class="text-2xl font-semibold text-gray-800 mb-4">Resumen de tu compra</h2>
@@ -54,7 +54,7 @@
                                     {{ \Carbon\Carbon::parse($selectedDate)->translatedFormat('l, d \d\e F \d\e Y') }}
                                     a las {{ \Carbon\Carbon::parse($selectedTime)->format('H:i') }}
                                 </p>
-                                <p class="text-sm text-gray-600">Comisión</p>
+                                <p class="text-sm text-gray-600">Cargos por servicio</p>
                             </div>
                             <div class="text-right">
                                 <p class="text-lg font-semibold text-gray-800">${{ number_format($precio_base, 2) }}</p>
@@ -79,8 +79,11 @@
             <div class="col-span-3 bg-white shadow-xl  rounded-2xl p-4">
 
                 <div class="flex flex-col justify-center items-center">
-                    <span>Tienes 15 minutos para poder completar el pago. Cuando se cumplan los 15minutos, se liberará
-                        el horario.</span>
+                    <span class="text-center">Tienes 15 minutos para poder completar el pago. Cuando se cumplan los 15
+                        minutos y no se ha
+                        producido el pago, se liberará el horario.</span>
+
+
                 </div>
 
             </div>

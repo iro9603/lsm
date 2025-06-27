@@ -1,21 +1,56 @@
+<footer class="bg-slate-900 text-slate-300 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <!-- Sección superior -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 text-center md:text-left">
+            <!-- Logo y descripción -->
+            <div class="md:col-span-1 flex flex-col items-center md:items-start">
+                <a href="#" class="flex items-center gap-2 mb-4">
+                    <img src="/logo.svg" class="h-8 w-8" alt="Logo">
+                    <span class="text-white font-bold text-xl">TuPlataforma</span>
+                </a>
+                <p class="text-sm text-slate-400 max-w-xs">Aprende sin límites, con cursos modernos y accesibles desde
+                    cualquier dispositivo.</p>
+            </div>
 
-<footer class="bg-white rounded-lg shadow-sm mt-16 dark:bg-gray-800">
-    <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© {{ now()->format('Y')}} <a href="/" class="hover:underline">Company Name™</a>. Todos los derechos reservados.
-    </span>
-    <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
-        <li>
-            <a href="#" class="hover:underline me-4 md:me-6">About</a>
-        </li>
-        <li>
-            <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
-        </li>
-        <li>
-            <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
-        </li>
-        <li>
-            <a href="#" class="hover:underline">Contact</a>
-        </li>
-    </ul>
+            <!-- Enlaces -->
+            <div>
+                <h4 class="text-white font-semibold mb-3">Explora</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-amber-400 transition">Cursos</a></li>
+                    <li><a href="#" class="hover:text-amber-400 transition">Instructores</a></li>
+                    <li><a href="#" class="hover:text-amber-400 transition">Blog</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-semibold mb-3">Comunidad</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-amber-400 transition">Discord</a></li>
+                    <li><a href="#" class="hover:text-amber-400 transition">GitHub</a></li>
+                    <li><a href="#" class="hover:text-amber-400 transition">Twitter</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-semibold mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-amber-400 transition">Política de privacidad</a></li>
+                    <li><a href="#" class="hover:text-amber-400 transition">Términos de uso</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Línea divisoria -->
+        <div class="border-t border-slate-800 mb-6"></div>
+
+        <!-- Sección inferior -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-400">
+            <p class="text-center">&copy; 2025 TuPlataforma. Todos los derechos reservados.</p>
+            <div class="flex gap-5 justify-center">
+                <a href="#" class="hover:text-amber-400 transition"><i class="fab fa-discord text-xl"></i></a>
+                <a href="#" class="hover:text-amber-400 transition"><i class="fab fa-twitter text-xl"></i></a>
+                <a href="#" class="hover:text-amber-400 transition"><i class="fab fa-github text-xl"></i></a>
+            </div>
+        </div>
     </div>
 </footer>

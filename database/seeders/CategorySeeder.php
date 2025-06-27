@@ -14,19 +14,21 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Desarrollo Web',
-            'Diseño web',
-            'Desarrollo Móvil',
-            'Desarrollo de Videojuegos',
-            'Diseño de Videjuegos'
+            'Álgebra',
+            'Geometría',
+            'Análisis real',
+            'Probabilidad y Estadística',
+            'Bachillerato',
+            'Universidad',
+            'Secundaria',
+            'Matemáticas discretas'
+
         ];
 
-        foreach($categories as $category){
-            Category::create([
+        foreach ($categories as $category) {
+            Category::firstOrCreate([
                 'name' => $category
             ]);
-       
         }
-
     }
 }

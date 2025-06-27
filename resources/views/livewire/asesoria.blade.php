@@ -41,13 +41,17 @@
                         </li>
                         <li class="w-full">
                             <div class="w-full">
-                                La página lo redirigirá para proceder con el pago.
+                                Una vez seleccionado el dia y hora, el botón aceptar lo redirigirá para proceder con el
+                                pago.
                             </div>
                         </li>
 
                         <li class="w-full">
                             <div class="w-full">
-                                Una vez aprobado el pago, se enviará un correo con los detalles para la sesión. También
+                                Una vez aprobado el pago, se enviará un correo con los detalles para la sesión de <span
+                                    class="font-semibold underline">Google
+                                    Meet</span>.
+                                También
                                 podrá consultar su reservación <a href="{{ route('classes.myClasses') }}"><span
                                         class="text-yellow-500 hover:cursor-pointer">
                                         aqui.</span></a>
@@ -155,6 +159,15 @@
                             </div>
                         </div>
                         <div class="mt-5 md:flex md:justify-end text-center">
+                            @if ($errors->any())
+                            <div class="bg-red-100 text-red-800 px-4 py-3 rounded mb-5">
+                                <ul class="list-disc pl-5 text-sm">
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
                             <button class="btn btn-red w-full md:w-[13%] p-1" type="submit">Acceptar</button>
                         </div>
                     </div>
@@ -312,9 +325,13 @@
 
                                             const listItem = document.createElement('li');
 
-                                            listItem.innerHTML = `<input type="radio" id="${slot.start}" value="${slotTime}" class="hidden peer" name="time" ${isPast ? 'disabled' : ''}><label for="${slot.start}"class="label-style ${isPast ? 'opacity-50 cursor-not-allowed' : ''}">${formattedTime}</label>`;
+                                            listItem.innerHTML = `
+                                            <input type="radio" id="${slot.start}" value="${slotTime}" class="hidden peer" name="time" ${isPast ? 'disabled' : ''}/>
+                                            <label for="${slot.start}" class="label-style ${isPast ? 'opacity-50 cursor-not-allowed' : ''}">${formattedTime}</label>
+                                            `;
                                             // Append the list item to the container
                                             slotContainer.appendChild(listItem);
+                                            
                                         });
                                     }
                                 })
@@ -326,7 +343,9 @@
 
                                 });
 
+                                
                         });
+
 
 
 

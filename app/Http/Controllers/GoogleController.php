@@ -73,6 +73,7 @@ class GoogleController extends Controller
                 ]),
                 'attendees' => [
                     ['email' => $email],
+                    ['email' => "riosirving04@gmail.com"]
                 ],
             ]);
 
@@ -86,7 +87,18 @@ class GoogleController extends Controller
 
             \Log::info("Meet link a enviar por correo: " . $meetLink);
 
-            Mail::to($email)->send(new EventoAgendadoMail($user_name, $meetLink));
+            $correos = [
+                ['email' => $email, 'name' => $user_name],
+                ['email' => 'riosirving04@gmail.com', 'name' => 'Irving Rios'],
+
+            ];
+
+            foreach ($correos as $destinatario) {
+                Mail::to($destinatario['email'])
+                    ->send(new EventoAgendadoMail($destinatario['name'], $meetLink));
+            }
+
+            /*  Mail::to($email)->send(new EventoAgendadoMail($user_name, $meetLink)); */
 
             return $meetLink;
         } catch (\Exception $e) {

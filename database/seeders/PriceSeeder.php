@@ -13,11 +13,17 @@ class PriceSeeder extends Seeder
      */
     public function run(): void
     {
-        $prices =[
-            0 , 10 , 15 , 20 , 25 , 30 , 35
+        $prices = [
+            0,
+            10,
+            15,
+            20,
+            25,
+            30,
+            35
         ];
 
-        foreach($prices as $price){
+        foreach ($prices as $price) {
             Price::create([
                 'value' => $price
             ]);

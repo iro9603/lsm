@@ -1,12 +1,12 @@
 <x-instructor-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-200 leading-tight">
             Crear nuevo curso
         </h2>
     </x-slot>
 
-    <x-container class="mt-12" width="4xl">
-        <div class="bg-white rounded-lg shadow-lg p-6">
+    <x-container class="m-16" width="4xl">
+        <div class="bg-gray-100 rounded-lg shadow-lg p-6">
             <form action="{{ route('instructor.courses.store') }}" method="POST">
                 @csrf
 
@@ -14,16 +14,14 @@
                     Complete esta información para crear un curso
                 </h2>
 
-                <x-validation-errors class="mb-4"/>
+                <x-validation-errors class="mb-4" />
 
                 <div class="mb-4">
                     <x-label class="mb-1">
                         Nombre del curso
                     </x-label>
-                    <x-input placeholder="Nombre del curso" class="w-full"
-                    name="title"
-                    value="{{ old('title')}}"
-                    oninput="string_to_slug(this.value, '#slug')"/>
+                    <x-input placeholder="Nombre del curso" class="w-full" name="title" value="{{ old('title')}}"
+                        oninput="string_to_slug(this.value, '#slug')" />
 
                 </div>
 
@@ -31,11 +29,8 @@
                     <x-label class="mb-1">
                         Slug
                     </x-label>
-                    <x-input 
-                    id="slug"
-                    placeholder="Slug del curso" class="w-full"
-                    name="slug"
-                    value="{{ old('slug')}}"/>
+                    <x-input id="slug" placeholder="Slug del curso" class="w-full" name="slug"
+                        value="{{ old('slug')}}" />
 
                 </div>
 
@@ -43,9 +38,8 @@
                     <x-label class="mb-1">
                         Resumen del curso
                     </x-label>
-                    <x-input placeholder="Resumen del curso" class="w-full"
-                    name="summary"
-                    value="{{ old('summary')}}"/>
+                    <x-input placeholder="Resumen del curso" class="w-full" name="summary"
+                        value="{{ old('summary')}}" />
 
                 </div>
 
@@ -54,10 +48,10 @@
                         <x-label class="mb-1">
                             Categorías
                         </x-label>
-                        <x-select class="w-full" name="category_id" >
+                        <x-select class="w-full" name="category_id">
                             @foreach ($categories as $category)
-                            <option value="{{ $category->id }}"
-                                @selected(old('category_id') == $category->id)>{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" @selected(old('category_id')==$category->id)>{{
+                                $category->name }}</option>
                             @endforeach
                         </x-select>
                     </div>
@@ -66,32 +60,27 @@
                         <x-label class="mb-1">
                             Niveles
                         </x-label>
-                        <x-select 
-                        class="w-full"
-                        name="level_id" >
+                        <x-select class="w-full" name="level_id">
                             @foreach ($levels as $level)
-                            <option value="{{ $level->id }}"
-                                @selected(old('level_id') == $level->id)>{{ $level->name }}</option>
+                            <option value="{{ $level->id }}" @selected(old('level_id')==$level->id)>{{ $level->name }}
+                            </option>
                             @endforeach
                         </x-select>
                     </div>
-                    
+
                     <div>
                         <x-label class="mb-1">
                             Precios
                         </x-label>
-                        <x-select 
-                        class="w-full"
-                        name="price_id" >
+                        <x-select class="w-full" name="price_id">
                             @foreach ($prices as $price)
-                            <option value="{{ $price->id }}"
-                                @selected(old('price_id') == $price->id)>
+                            <option value="{{ $price->id }}" @selected(old('price_id')==$price->id)>
                                 @if ($price->value == 0)
-                                    Gratis
+                                Gratis
                                 @else
-                                    {{ $price->value }} US$ (nivel {{ $loop->index }})
+                                {{ $price->value }} US$ (nivel {{ $loop->index }})
                                 @endif
-                                </option>
+                            </option>
                             @endforeach
                         </x-select>
                     </div>

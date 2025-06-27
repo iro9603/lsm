@@ -9,18 +9,7 @@ use App\Http\Controllers\ManageDatesController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\CheckCartItems;
 use App\Livewire\Asesoria;
-
-
-use App\Models\Course;
-use App\Models\Lesson;
-use App\Models\TimeSlot;
-use CodersFree\Shoppingcart\Facades\Cart;
-use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
-use Illuminate\Support\Facades\Auth;
-
-use Carbon\Carbon;
 
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -39,14 +28,6 @@ Route::get('courses-status/{course}/{lesson?}', [CourseController::class, 'statu
 Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 
 Route::get('checkout', [CheckOutController::class, 'index'])->middleware(CheckCartItems::class)->name('checkout.index');
-
-/* Route::get('prueba', function () {
-    $googleObj = new GoogleController();
-
-  
-    $googleObj->createCalendarEvent('riosirving03@gmail.com', '2025-06-03', '10:00');
-
-}); */
 
 
 Route::post('checkout/createPaypalOrder', [CheckOutController::class, 'createPaypalOrder'])->name('checkout.createPaypalOrder');

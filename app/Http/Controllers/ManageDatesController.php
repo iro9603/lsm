@@ -135,7 +135,7 @@ class ManageDatesController extends Controller
             $slot->is_temporarily_blocked = true;
             $slot->temporarily_blocked_until = Carbon::now()->addMinutes(1);
             $slot->save();
-            /*  return view('booklesson', compact('selectedDate', 'selectedDateTime')); */
+
             return view('booklesson')->with([
                 'selectedTime' => $request->input('time'),
                 'selectedDate' => $selectedDateTime->toDateString(),

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
 class CourseController extends Controller
 {
 
@@ -21,8 +22,6 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         return view('courses.show', compact('course'));
-
-
     }
 
     public function myCourses()

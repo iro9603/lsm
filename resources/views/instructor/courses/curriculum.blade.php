@@ -1,6 +1,6 @@
 <x-instructor-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-200 leading-tight">
             Curso: {{ $course->title }}
         </h2>
     </x-slot>
@@ -10,7 +10,7 @@
     </x-instructor.course-sidebar>
 
     @push('js')
-        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
     @endpush
 

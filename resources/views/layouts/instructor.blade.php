@@ -1,72 +1,74 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-            <!-- fontawesome -->
-        <script src="https://kit.fontawesome.com/785298cd2f.js" crossorigin="anonymous"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/785298cd2f.js" crossorigin="anonymous"></script>
 
-        <!-- Styles -->
-        @livewireStyles
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        @stack('css')
+    <!-- Styles -->
+    @livewireStyles
 
-    </head>
-    <body class="font-sans antialiased">
-        <x-banner />
+    @stack('css')
 
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.includes.instructor.navigation-menu')
+</head>
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+<body class="font-sans antialiased">
+    <x-banner />
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+    <div class="min-h-screen bg-indigo-950">
+        @include('layouts.includes.instructor.navigation-menu')
 
-            @include('layouts.includes.instructor.footer')
-        </div>
+        <!-- Page Heading -->
+        @if (isset($header))
+        <header class="bg-indigo-900 shadow ">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 mb-9">
+                {{ $header }}
+            </div>
+        </header>
+        @endif
 
-        @stack('modals')
+        <!-- Page Content -->
+        <main>
+            {{ $slot }}
+        </main>
 
-        @livewireScripts
+        @include('layouts.includes.instructor.footer')
+    </div>
 
-        <script id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-        </script>
+    @stack('modals')
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @livewireScripts
 
-        <script>
-            Livewire.on('swal', (data)=>{
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        Livewire.on('swal', (data)=>{
                 Swal.fire(data[0]);
     
             
             });
             
-        </script>
+    </script>
 
-        @stack('js')
+    @stack('js')
 
-    </body>
+</body>
+
 </html>

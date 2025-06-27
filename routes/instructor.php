@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 use App\Http\Controllers\Instructor\CourseController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function(){
+Route::get('/', function () {
     return view('instructor.dashboard');
 });
 
@@ -20,3 +20,5 @@ Route::get('courses/{course}/goals', [CourseController::class, 'goals'])->name('
 Route::get('courses/{course}/requirements', [CourseController::class, 'requirements'])->name('courses.requirements');
 
 Route::get('courses/{course}/curriculum', [CourseController::class, 'curriculum'])->name('courses.curriculum');
+
+Route::put('courses/{course}/status',  [CourseController::class, 'updateStatus'])->name('courses.update-status');

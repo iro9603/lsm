@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Instructor;
 
+use App\Enums\CourseStatus;
+use Illuminate\Validation\Rules\Enum;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
@@ -113,7 +115,6 @@ class CourseController extends Controller
         session()->flash('flash.banner', "El curso de actualizó con éxito");
 
         return redirect()->route('instructor.courses.edit', $course);
-
     }
 
     /**
@@ -142,5 +143,16 @@ class CourseController extends Controller
     public function curriculum(Course $course)
     {
         return view('instructor.courses.curriculum', compact('course'));
+    }
+
+    public function updateStatus(Request $request, Course $course)
+    {
+        $request->validate([
+            'status' => ['required', new Enum(CourseStatus::class)],
+        ]);
+        $course->status = CourseStatus::from($request->status);
+        $course->save();
+
+        return back()->with('success', 'Estado actualizado correctamente.');
     }
 }
