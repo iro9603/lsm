@@ -21,7 +21,14 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
-        return view('courses.show', compact('course'));
+        // Sumar duración de todas las lecciones de todas las secciones del curso
+        $totalDuration = $course->sections()
+            ->with('lessons') // para evitar N+1
+            ->get()
+            ->flatMap(fn($section) => $section->lessons)
+            ->sum('duration');
+
+        return view('courses.show', compact('course', 'totalDuration'));
     }
 
     public function myCourses()

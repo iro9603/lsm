@@ -1,7 +1,8 @@
 <x-app-layout>
-    <x-container class="mt-12">
+    <x-container class="m-40">
         <div class="flex justify-center">
-            <img class="w-65" src="{{ asset('storage/thanks.jpg') }}" alt="">
+            <img class="w-auto" src=" {{ asset('storage/thanks.jpg') }}" alt="">
         </div>
+        <div>sda</div>
     </x-container>
 </x-app-layout>

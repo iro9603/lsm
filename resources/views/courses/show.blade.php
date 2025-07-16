@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-container class="mt-12">
+    <x-container class="mt-12 mb-14">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div class="col-span-1 lg:col-span-2 order-2 lg:order-1">
 
@@ -84,16 +84,24 @@
                                     <ul>
                                         @foreach ($section->lessons->sortBy('position') as $lesson)
                                         <li>
-                                            <a class="flex" href="{{ route('courses.status', [$course, $lesson]) }}">
-                                                <i class="far fa-play-circle text-blue-500 mt-0.5 mr-2"></i>
+                                            <a class="flex justify-between items-center"
+                                                href="{{ route('courses.status', [$course, $lesson]) }}">
+                                                <div class="flex items-center">
+                                                    <i class="far fa-play-circle text-blue-500 mt-0.5 mr-2"></i>
+                                                    <span
+                                                        class="font-semibold text-gray-100 hover:text-blue-500 text-sm">
+                                                        {{ $lesson->name }}
+                                                    </span>
+                                                </div>
 
-                                                <span class="font-semibold text-gray-100 hover:text-blue-500 text-sm">
-                                                    {{ $lesson->name }}
+                                                <span class="text-sm text-gray-400 ml-4">
+                                                    {{ gmdate('i:s', $lesson->duration) }}
                                                 </span>
                                             </a>
                                         </li>
                                         @endforeach
                                     </ul>
+
                                 </div>
                             </div>
                         </li>
@@ -211,8 +219,17 @@
                                 {{ $course->updated_at->format('d/m/Y') }}
                             </li>
                             <li>
-                                <i class="far fa-clock inline-block w-6"></i> Duración:
-                                {{ $course->updated_at->format('d/m/Y') }}
+                                <i class="far fa-clock inline-block w-6"></i> Duración total:
+                                @if ($totalDuration > 0)
+                                @php
+                                $hours = floor($totalDuration / 3600);
+                                $minutes = floor(($totalDuration % 3600) / 60);
+                                $seconds = $totalDuration % 60;
+                                @endphp
+                                {{ $hours }}h {{ $minutes }}min {{ $seconds }}s
+                                @else
+                                Sin lecciones aún
+                                @endif
                             </li>
                             <li>
                                 <i class="fas fa-chart-line inline-block w-6"></i> Nivel:

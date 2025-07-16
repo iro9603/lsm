@@ -73,13 +73,24 @@
 
                                 </div>
                                 <div class=" hidden md:block col-span-2">
-                                    <p class="text-sm font-bold">100 US</p>
+                                    <p class="text-sm font-bold">
+                                        @if ($course->price->value == 0)
+                                        No hay nada, es gratis
+                                        @else
+                                        100
+                                        @endif
+                                    </p>
                                     <p class="mb-1 text-sm">Ganado este mes</p>
-                                    <p class="text-sm font-bold">1000 US</p>
+                                    @if ($course->price->value == 0)
+                                    <p class="text-sm font-bold">No hay nada, es gratis</p>
+                                    @else
+
+                                    @endif
                                     <p class="text-sm">Ganado Total</p>
+
                                 </div>
                                 <div class=" hidden md:block col-span-2">
-                                    <p>50</p>
+                                    <p>{{ $course->students->count() }}</p>
                                     <p class="text-sm">Inscripciones este mes</p>
                                 </div>
                                 <div class=" hidden md:block col-span-2">

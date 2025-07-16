@@ -18,9 +18,10 @@ class ManageLessonContent extends Component
 
     public $editDescription = false;
 
-    public $platform = 1, $video, $url;
+    public $platform = 1, $video, $url, $urlRecursos;
 
 
+    public $editLinkRecursos = false;
 
     public $description;
 
@@ -33,6 +34,8 @@ class ManageLessonContent extends Component
         $this->is_published = $lesson->is_published;
 
         $this->is_preview = $lesson->is_preview;
+
+        $this->urlRecursos = $lesson->recursos;
     }
 
     public function updated($property, $value)
@@ -58,8 +61,6 @@ class ManageLessonContent extends Component
         ];
         if ($this->platform == 1) {
             $rules['video'] = 'required|mimes:mp4,mov,avi,wmv,flv,3gp';
-
-
         } else {
             $rules['url'] = ['required', 'regex:/^(?:https?:\/\/)?(?:www\.)?(youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=))([\w-]{10,12})/'];
         }
@@ -80,8 +81,6 @@ class ManageLessonContent extends Component
         if ($this->platform == 1) {
             $this->lesson->video_original_name = $this->video->getClientOriginalName();
 
-
-
             $this->lesson->save();
 
             $this->dispatch('uploadVideo', $this->lesson->id)->self();
@@ -95,7 +94,6 @@ class ManageLessonContent extends Component
         }
 
         $this->reset('editVideo', 'platform', 'url');
-
     }
 
     #[On('uploadVideo')]
@@ -111,7 +109,6 @@ class ManageLessonContent extends Component
         VideoUploaded::dispatch($lesson);
 
         $this->reset('video');
-
     }
 
     public function saveDescription()
@@ -121,7 +118,17 @@ class ManageLessonContent extends Component
         $this->lesson->save();
 
         $this->reset('editDescription');
+    }
 
+    public function saveLinkRecursos()
+    {
+
+
+        $this->lesson->recursos = $this->urlRecursos;
+
+        $this->lesson->save();
+
+        $this->reset('editLinkRecursos');
     }
 
     public function render()
