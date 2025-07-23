@@ -44,8 +44,8 @@
     <div class="border-t border-slate-800 mb-6"></div>
 
     <!-- Sección inferior -->
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-400">
-      <p class="text-center">&copy; 2025 TuPlataforma. Todos los derechos reservados.</p>
+    <div class="flex flex-col  lg:flex-row justify-between items-center gap-4 text-sm text-slate-400">
+      <p class="text-center">&copy; 2025 Tuukul Academia. Todos los derechos reservados.</p>
       <div class="flex gap-5 justify-center">
         <a href="https://www.facebook.com/TuukulMatematicas" class="hover:text-amber-400 transition" target="_blank"><i
             class="fab fa-facebook text-xl"></i></a>

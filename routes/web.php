@@ -9,6 +9,7 @@ use App\Http\Controllers\ManageDatesController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\CheckCartItems;
 use App\Livewire\Asesoria;
+use App\Livewire\Us;
 use Illuminate\Support\Facades\Route;
 
 
@@ -44,3 +45,7 @@ Route::post('asesoria/bookClass', [ManageDatesController::class, 'handleForm'])-
 
 Route::get('auth/google', [GoogleController::class, 'redirect']);
 Route::get('auth/google/callback', [GoogleController::class, 'callback']);
+
+Route::get('us', [Us::class, 'render'])->name('nosotros');
+
+Route::get('/calendar/{date}', [ManageDatesController::class, 'getTimeSlotsperDay'])->name('user.getTimeSlots')->middleware('auth:sanctum');

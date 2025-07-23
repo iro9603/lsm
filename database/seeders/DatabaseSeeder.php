@@ -2,10 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
-use App\Models\Course;
-use App\Models\Level;
-use App\Models\Price;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,12 +20,10 @@ class DatabaseSeeder extends Seeder
 
         Storage::makeDirectory('courses/images');
 
-        // User::factory(10)->create();
-
         User::factory()->create([
-            'name' => 'Irving',
-            'email' => 'riosirving04@gmail.com',
-            'password' => bcrypt('1234')
+            'name' => 'admin',
+            'email' => 'tuukulacademia03@gmail.com',
+            'password' => bcrypt('Velvet1996@')
         ]);
 
         $this->call([
@@ -37,9 +31,9 @@ class DatabaseSeeder extends Seeder
             LevelSeeder::class,
             PriceSeeder::class,
             CourseSeeder::class,
-
             PermissionSeeder::class,
-            RoleSeeder::class
+            RoleSeeder::class,
+            TimeSlotSeeder::class
 
         ]);
     }

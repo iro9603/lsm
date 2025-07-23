@@ -52,9 +52,11 @@
 
 
             @if ($current->description)
-            <p class="text-gray-600 mt-2">
-                {{ $current->description }}
-            </p>
+
+            <div class="text-gray-200 mt-2">
+                {!! $current->description !!}
+            </div>
+
             @endif
 
             @auth

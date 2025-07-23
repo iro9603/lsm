@@ -21,7 +21,7 @@
 
                     <!-- Encabezado principal -->
                     <h2 class="text-gray-100 text-4xl font-bold mb-4">
-                        Agenda tu aesoría ahora.
+                        Agenda tu asesoría ahora.
                     </h2>
 
                     <!-- Lista de pasos -->
@@ -63,15 +63,6 @@
                 </div>
             </div>
 
-            @if ($errors->any())
-            <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-                <ul class="list-disc pl-5">
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
 
             <div class="col-span-1 lg:col-span-6">
                 <form action="{{ route('asesoria.handleForm') }}" id="dateForm" method="POST">
@@ -159,7 +150,7 @@
                             </div>
                         </div>
                         <div class="mt-5 md:flex md:justify-end text-center">
-                            @if ($errors->any())
+                            {{-- @if ($errors->any())
                             <div class="bg-red-100 text-red-800 px-4 py-3 rounded mb-5">
                                 <ul class="list-disc pl-5 text-sm">
                                     @foreach ($errors->all() as $error)
@@ -167,7 +158,7 @@
                                     @endforeach
                                 </ul>
                             </div>
-                            @endif
+                            @endif --}}
                             <button class="btn btn-red w-full md:w-[13%] p-1" type="submit">Acceptar</button>
                         </div>
                     </div>
@@ -182,26 +173,11 @@
     @push('js')
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
     <script>
-        let fechasConHorarios = [];
-
-            async function cargarFechasConHorarios() {
-                try {
-                    const response = await axios.get('/api/calendar');
-
-                    fechasConHorarios = response.data
-                        .filter(entry => entry.start != undefined)
-                        .map(entry => entry.date); // formato "2025-06-11"
-                } catch (error) {
-                    console.error("Error al cargar fechas con horarios:", error);
-                }
-
-
-            }
-
+        const fechasConHorarios = @json($formattedSlots);
             document.addEventListener("DOMContentLoaded", async function () {
 
                 if (window.Datepicker) {
-                    await cargarFechasConHorarios();
+                   
                     // Definir locale español
                     Datepicker.locales.es = {
                         days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
@@ -223,9 +199,10 @@
 
                     };
 
+
                     // Convertimos a Date para comparaciones
-                    const fechasParseadas = fechasConHorarios.map(fechaStr => {
-                        const [y, m, d] = fechaStr.split('-');
+                    const fechasParseadas = fechasConHorarios.map(slot => {
+                        const [y, m, d] = slot.date.split('-');
                         return new Date(y, m - 1, d);
                     });
 
@@ -257,21 +234,34 @@
 
                         // Ejecutar después de render inicial
 
-
+                       let dateInput="";
+                       let currentRequest;
                         $datepickerEl.addEventListener('changeDate', async function (event) {
 
                             const date = event.detail.date;
 
                             dateString = date.toISOString().split('T')[0]; // → '2025-04-25'
 
-                            axios.get(`api/calendar/${dateString}`)
+                            if (currentRequest) {
+                                currentRequest.cancel();
+                            }
+
+
+                            const CancelToken = axios.CancelToken;
+                            currentRequest = CancelToken.source();
+
+                            axios.defaults.withCredentials = true;
+                            axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                            axios.get(`/calendar/${dateString}`,{
+                                 cancelToken: currentRequest.token
+                            })
                                 .then(function (response) {
                                     // handle success
                                     const slotContainer = document.getElementById('timetable');
 
                                     const dateHeader = document.getElementById('dateHeader');
 
-                                    const dateInput = document.getElementById('dateInput');
+                                    dateInput = document.getElementById('dateInput');
 
                                     const timeSlots = response.data;
 
@@ -313,31 +303,56 @@
                                             const isPast = isBeforeToday || (isToday && slotDateTime < now);
 
 
-                                            const [hourStr, minuteStr] = slot.start.split(':');
-                                            const dateForFormatting = new Date();
-                                            dateForFormatting.setHours(parseInt(hourStr), parseInt(minuteStr || '0'), 0);
+                                            if (typeof slot.start === 'string' && slot.start.includes(':')) {
+                                                const [hourStr, minuteStr] = slot.start.split(':');
+                                                const dateForFormatting = new Date();
+                                                dateForFormatting.setHours(parseInt(hourStr), parseInt(minuteStr || '0'), 0);
 
-                                            const formattedTime = dateForFormatting.toLocaleTimeString('en-US', {
-                                                hour: 'numeric',
-                                                minute: '2-digit',
-                                                hour12: true
-                                            }); // Ej. "8:30 AM"
+                                                const formattedTime = dateForFormatting.toLocaleTimeString('en-US', {
+                                                    hour: 'numeric',
+                                                    minute: '2-digit',
+                                                    hour12: true
+                                                }); // Ej. "8:30 AM"
 
-                                            const listItem = document.createElement('li');
 
-                                            listItem.innerHTML = `
-                                            <input type="radio" id="${slot.start}" value="${slotTime}" class="hidden peer" name="time" ${isPast ? 'disabled' : ''}/>
-                                            <label for="${slot.start}" class="label-style ${isPast ? 'opacity-50 cursor-not-allowed' : ''}">${formattedTime}</label>
-                                            `;
-                                            // Append the list item to the container
-                                            slotContainer.appendChild(listItem);
-                                            
+                                                const listItem = document.createElement('li');
+
+                                                // Crear input
+                                                const input = document.createElement('input');
+                                                input.type = 'radio';
+                                                input.id = slot.start;
+                                                input.value = slotTime;
+                                                input.name = 'time';
+                                                input.className = 'hidden peer';
+                                                if (isPast) {
+                                                    input.disabled = true;
+                                                }
+
+                                                // Crear label
+                                                const label = document.createElement('label');
+                                                label.htmlFor = slot.start;
+                                                label.className = 'label-style';
+                                                if (isPast) {
+                                                    label.classList.add('opacity-50', 'cursor-not-allowed');
+                                                }
+                                                label.textContent = formattedTime;
+
+                                                // Insertar input y label al <li>
+                                                listItem.appendChild(input);
+                                                listItem.appendChild(label);
+
+                                                // Agregar <li> al contenedor
+                                                slotContainer.appendChild(listItem);
+                                            }
                                         });
                                     }
                                 })
                                 .catch(function (error) {
-                                    // handle error
-                                    console.log(error);
+                                   if (axios.isCancel(error)) {
+                                        console.log("Solicitud cancelada:", error.message);
+                                    } else {
+                                        console.error(error);
+                                    }
                                 })
                                 .finally(function () {
 
@@ -353,9 +368,9 @@
                         const form = document.getElementById("dateForm");
 
                         form.addEventListener("submit", function (event) {
-                            try {
+                            
                                 let timeInput = document.querySelector('input[name="time"]:checked');
-                                if (!dateString || dateString === "") {
+                                if (!dateInput.value || dateInput.value === "") {
                                     Swal.fire({
                                         icon: "error",
                                         title: "Oops...",
@@ -373,12 +388,6 @@
                                     event.preventDefault();
                                     return;
                                 }
-                            } catch (error) {
-                                console.error("Error en validación:", error);
-                                alert("Error inesperado. Intenta de nuevo.");
-                            }
-
-
                         });
 
                     }
@@ -387,5 +396,6 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @endpush
 </x-app-layout>

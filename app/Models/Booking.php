@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Booking extends Model
 {
@@ -16,5 +17,15 @@ class Booking extends Model
     public function availableSlot()
     {
         return $this->belongsTo(AvailableSlot::class);
+    }
+
+    public function scopeMineBooked($query)
+    {
+        return $query->with(['availableSlot.timeSlot', 'user'])
+            ->where('user_id', Auth::id())
+            ->whereHas('availableSlot.timeSlot', function ($q) {
+                $q->where('is_booked', true);
+            })
+            ->orderBy('created_at', 'desc');
     }
 }

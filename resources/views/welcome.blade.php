@@ -140,7 +140,7 @@
                     </a>
                     <h1
                         class="text-xl font-semibold text-gray-100 hover:text-yellow-400 transition-colors text-center mb-2">
-                        <a href="">Quienes somos</a>
+                        <a href="{{ route('nosotros') }}">Quienes somos</a>
                     </h1>
 
                     <p class="text-indigo-300 text-sm leading-relaxed text-center">

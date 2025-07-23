@@ -24,13 +24,8 @@ class ClassesTable extends DataTableComponent
 
     public function builder(): \Illuminate\Database\Eloquent\Builder
     {
-        $is_booked = true;
-        return Booking::query()
-            ->with(['availableSlot.timeSlot', 'user']) // Relaciones necesarias
-            ->where('user_id', Auth::id())// Filtra por usuario logueado
-            ->whereHas('availableSlot.timeSlot', function ($q) use ($is_booked) {
-                $q->where('is_booked', $is_booked);
-            })->orderBy('created_at', 'desc'); // Filtra las lecciones reservadas por el usuario 
+
+        return Booking::mineBooked(); // Filtra las lecciones reservadas por el usuario 
     }
 
     public function columns(): array

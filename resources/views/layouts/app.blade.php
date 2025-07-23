@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 
 <head>
     <meta charset="utf-8">
@@ -26,25 +26,31 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased flex flex-col min-h-screen">
     <x-banner />
 
-    <div class="bg-gradient-to-b from-[#1a1440] to-[#2c235d] min-h-screen">
+    <div class="bg-gradient-to-b from-[#1a1440] to-[#2c235d] flex-grow">
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
         @if (isset($header))
-            <header class="bg-indigo-950 ">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
+        <header class="bg-indigo-950 ">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
         @endif
 
         <!-- Page Content -->
-        <main>
+        <main class="flex-grow">
             {{ $slot }}
         </main>
+
+        <a aria-label="Chat on WhatsApp" href="https://wa.me/1XXXXXXXXXX"
+            class="fixed bottom-4 right-4 z-50 md:w-12 md:h-12 w-9 h-9 lg:w-20 lg:h-20">
+            <img alt="Chat on WhatsApp" src="{{ asset('storage/whatsapp.png') }}"
+                class="w-full h-full object-contain" />
+        </a>
 
         @include('layouts.includes.app.footer')
 
