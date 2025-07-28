@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AvailableSlot;
 use App\Models\Booking;
 use App\Models\TimeSlot;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -64,7 +65,8 @@ class ManageDatesController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required',
             'date' => 'required|date|after_or_equal:today', // Date must be today or in the future
-            'time' => ['required', Rule::in(TimeSlot::pluck('start_time')->toArray())], // Ensure time exists in available slots
+            'time' => ['required', Rule::in(TimeSlot::pluck('start_time')->toArray())], // Ensure time exists in available slots,
+            'id_user' => 'required|exists:users,id'
         ]);
 
         $email = $request->input('email');
@@ -106,16 +108,64 @@ class ManageDatesController extends Controller
         if ($exists) {
             return back()->withErrors(['conflict' => 'Este horario ya fue reservado']);
         } else {
-            $slot->is_temporarily_blocked = true;
-            $slot->temporarily_blocked_until = Carbon::now()->addMinutes(1);
-            $slot->save();
 
-            return view('booklesson')->with([
-                'selectedTime' => $request->input('time'),
-                'selectedDate' => $selectedDateTime->toDateString(),
-                'email' => $email,
-                'blocked_until' => $slot->temporarily_blocked_until->toIso8601String()
-            ]);
+            $user = User::find($request->input('id_user'));
+            if ($user->is_blocked == false) {
+                $slot->is_temporarily_blocked = true;
+                $slot->temporarily_blocked_until = Carbon::now()->addMinutes(1);
+                $slot->save();
+
+
+                \MercadoPago\MercadoPagoConfig::setAccessToken(env('MP_ACCESS_TOKEN'));
+                $client = new \MercadoPago\Client\Preference\PreferenceClient();
+                // Calcular el total
+                $tarifa_porcentual = 0.0349; // 3.49%
+                $tarifa_fija = 4.00; // $4.00 fijos
+
+                $precio_base = 200; // el precio real de tu producto/servicio
+
+                $comision = ($precio_base * $tarifa_porcentual) + $tarifa_fija;
+                $total_con_comision = $precio_base + $comision;
+
+                $externalReference = $email . '|' . $request->input('time') . ' ' . $selectedDateTime->toDateString();
+                $preference = $client->create([
+                    "items" => array(
+                        array(
+                            "title" => "Clase",
+                            "quantity" => 1,
+                            "unit_price" => $total_con_comision
+                        )
+                    ),
+                    "external_reference" => $externalReference,
+
+
+                    "back_urls" => [
+                        "success" => route('classes.myClasses'),
+                        "failure" => route('asesoria'),
+                        "pending" => "https://www.tu-sitio/pending"
+                    ],
+                    // Recordar modificar esto cada vez que se incialice ngrok para que mercadopago mande la notificacion
+                    "notification_url" => env('APP_URL') . "/api/mercadopago/webhook",
+                    "auto_return" => "approved"
+                ]);
+
+                return view('booklesson')->with([
+                    'precio_base' => $precio_base,
+                    'comision' => $comision,
+                    'preference' => $preference,
+                    'total_con_comision' => $total_con_comision,
+                    'selectedTime' => $request->input('time'),
+                    'selectedDate' => $selectedDateTime->toDateString(),
+                    'email' => $email,
+                    'blocked_until' => $slot->temporarily_blocked_until->toIso8601String()
+                ]);
+            } else {
+                return back()->with('alert', [
+                    'type' => 'error',
+                    'title' => 'Acceso restringido',
+                    'text' => 'Lo siento, no puedes agendar.'
+                ]);
+            }
         }
     }
 }

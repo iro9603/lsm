@@ -1,5 +1,5 @@
 <div
-    class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-b from-indigo-800 via-purple-800 to-indigo-950">
+    class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-b from-indigo-950 to-indigo-800">
     <div>
         {{ $logo }}
     </div>

@@ -15,7 +15,6 @@ class UserController extends Controller
     public function index()
     {
         return view('admin.users.index');
-
     }
 
     /**
@@ -77,7 +76,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6|confirmed',
-            'roles' => 'nullable|array'
+            'roles' => 'nullable|array',
+
         ]);
 
         $user->name = $data['name'];
@@ -86,6 +86,8 @@ class UserController extends Controller
         if ($data['password']) {
             $user->password = bcrypt($data['password']);
         }
+
+        $user->is_blocked = $request->input('is_blocked');
 
         $user->save();
 
@@ -119,6 +121,5 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('admin.users.index');
-
     }
 }

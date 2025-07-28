@@ -22,7 +22,8 @@ class CategorySeeder extends Seeder
             'Universidad',
             'Secundaria',
             'Matemáticas discretas',
-            'IT'
+            'IT',
+            'Fundamentos'
 
         ];
 

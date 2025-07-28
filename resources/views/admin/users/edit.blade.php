@@ -51,13 +51,34 @@
                 </x-label>
                 <ul>
                     @foreach ($roles as $role)
-                        <li>
-                            <label>
-                                <x-checkbox name="roles[]" value="{{ $role->id }}" :checked="in_array($role->id, old('roles', $user->roles->pluck('id')->toArray()))" />
-                                {{ $role->name }}
-                            </label>
-                        </li>
+                    <li>
+                        <label>
+                            <x-checkbox name="roles[]" value="{{ $role->id }}"
+                                :checked="in_array($role->id, old('roles', $user->roles->pluck('id')->toArray()))" />
+                            {{ $role->name }}
+                        </label>
+                    </li>
                     @endforeach
+                </ul>
+            </div>
+
+            <div class="mb-4">
+                <x-label class="mb-1">Estatus actual del usuario: {{ $user->is_blocked ? 'bloqueado' : 'sin
+                    restricciones' }}
+                </x-label>
+                <ul class="space-y-2 mt-2">
+                    <li>
+                        <label>
+                            <input type="radio" name="is_blocked" value="1" {{ $user->is_blocked ? 'checked' : '' }}>
+                            Bloquear
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="is_blocked" value="0" {{ !$user->is_blocked ? 'checked' : '' }}>
+                            Desbloquear
+                        </label>
+                    </li>
                 </ul>
             </div>
 
@@ -76,8 +97,8 @@
     </form>
 
     @push('js')
-        <script>
-            function confirmDelete() {
+    <script>
+        function confirmDelete() {
                 Swal.fire({
                     title: "¿Estás seguro?",
                     text: "No podras revertir esto!",
@@ -95,7 +116,7 @@
                     }
                 });
             }
-        </script>
+    </script>
     @endpush
 
 </x-admin-layout>

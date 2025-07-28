@@ -7,6 +7,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\ManageDatesController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\ManageBooking;
 use App\Http\Middleware\CheckCartItems;
 use App\Livewire\Asesoria;
 use App\Livewire\Us;
@@ -39,6 +40,7 @@ Route::get('gracias', function () {
     return view('gracias');
 })->name('success');
 
+
 Route::get('asesoria', [Asesoria::class, 'index'])->middleware('auth')->name('asesoria');
 
 Route::post('asesoria/bookClass', [ManageDatesController::class, 'handleForm'])->middleware('auth')->name('asesoria.handleForm');
@@ -46,6 +48,8 @@ Route::post('asesoria/bookClass', [ManageDatesController::class, 'handleForm'])-
 Route::get('auth/google', [GoogleController::class, 'redirect']);
 Route::get('auth/google/callback', [GoogleController::class, 'callback']);
 
-Route::get('us', [Us::class, 'render'])->name('nosotros');
+Route::get('about-us', [Us::class, 'render'])->name('nosotros');
 
 Route::get('/calendar/{date}', [ManageDatesController::class, 'getTimeSlotsperDay'])->name('user.getTimeSlots')->middleware('auth:sanctum');
+
+Route::post('/cancelar-reserva', [ManageBooking::class, 'cancelarReserva'])->name('cancelar.reserva');

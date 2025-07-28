@@ -67,9 +67,7 @@ class MercadoPagoWebhookController extends Controller
                             $slot->is_temporarily_blocked = false;
                             $slot->temporarily_blocked_until = null;
                             $slot->save();
-                            /* AvailableSlot::where('id', $available_slot_id)->update([
-                                'is_booked' => 1
-                            ]); */
+
 
                             $googleObj = new GoogleController();
 

@@ -132,6 +132,7 @@
                                 </h3>
                                 <input type="hidden" id="dateInput" name="date" />
                                 <input type="hidden" name="email" value="{{  Auth::user()->email }}" />
+                                <input type="hidden" name="id_user" value="{{ Auth::user()->id }}" />
                                 <div data-collapse-toggle="timetable"
                                     class="inline-flex items-center w-full py-2 px-5 me-2 justify-center text-sm font-medium text-gray-300 focus:outline-none bg-gray-800 rounded-lg border border-blue-300  focus:z-10 focus:ring-4 ">
                                     <svg class=" w-4 h-4 text-gray-300 dark:text-white me-2" aria-hidden="true"
@@ -150,7 +151,7 @@
                             </div>
                         </div>
                         <div class="mt-5 md:flex md:justify-end text-center">
-                            {{-- @if ($errors->any())
+                            @if ($errors->any())
                             <div class="bg-red-100 text-red-800 px-4 py-3 rounded mb-5">
                                 <ul class="list-disc pl-5 text-sm">
                                     @foreach ($errors->all() as $error)
@@ -158,7 +159,7 @@
                                     @endforeach
                                 </ul>
                             </div>
-                            @endif --}}
+                            @endif
                             <button class="btn btn-red w-full md:w-[13%] p-1" type="submit">Acceptar</button>
                         </div>
                     </div>
@@ -166,7 +167,21 @@
             </div>
         </div>
 
+        @push('js')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @endpush
 
+        @push('js')
+        @if(session('alert'))
+        <script>
+            Swal.fire({
+            icon: "{{ session('alert.type') }}",
+            title: "{{ session('alert.title') }}",
+            text: "{{ session('alert.text') }}",
+        });
+        </script>
+        @endif
+        @endpush
     </x-container>
 
 
@@ -362,9 +377,6 @@
                         });
 
 
-
-
-
                         const form = document.getElementById("dateForm");
 
                         form.addEventListener("submit", function (event) {
@@ -395,7 +407,7 @@
             });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     @endpush
 </x-app-layout>
