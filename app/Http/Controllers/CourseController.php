@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\ExchangeRate;
 use App\Models\Lesson;
 use App\Models\Section;
 use Illuminate\Http\Request;
@@ -21,6 +22,8 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
+
+
         // Sumar duración de todas las lecciones de todas las secciones del curso
         $totalDuration = $course->sections()
             ->with('lessons') // para evitar N+1

@@ -4,7 +4,13 @@ $links = [
 'name' => 'Cursos',
 'route' => route('instructor.courses.index'),
 'active' => request()->routeIs('instructor.courses.index')
+],
+[
+'name' => 'Edit info',
+'route' => route('instructor.info.index'),
+'active' => request()->routeIs('instructor.info.index')
 ]
+
 ];
 @endphp
 

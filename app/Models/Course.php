@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Enums\CourseStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -71,6 +72,14 @@ class Course extends Model
         );
     }
 
+    public function getPriceMxnAttribute()
+    {
+        // Ejemplo: convertir desde USD a MXN usando un valor fijo de tipo de cambio
+        $rate = ExchangeRate::where('from_currency', 'USD')
+            ->where('to_currency', 'MXN')
+            ->value('rate') ?? 0;
+        return $this->price->value * $rate;
+    }
 
     public function teacher()
     {

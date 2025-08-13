@@ -127,8 +127,6 @@
                                         </ul>
 
                                         <span class="text-sm text-gray-500 font-semibold ml-1">(5)</span>
-
-
                                     </div>
 
                                     <p class="font-semibold mb-2">
@@ -137,8 +135,6 @@
                                             Gratis
                                         </span>
                                         @else
-
-
 
                                         <span class="text-gray-400">
                                             {{ number_format($course->price->value, 2) }} USD ({{

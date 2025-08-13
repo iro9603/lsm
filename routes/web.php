@@ -6,6 +6,7 @@ use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\ManageDatesController;
+use App\Http\Controllers\TutorsController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ManageBooking;
 use App\Http\Middleware\CheckCartItems;
@@ -53,3 +54,7 @@ Route::get('about-us', [Us::class, 'render'])->name('nosotros');
 Route::get('/calendar/{date}', [ManageDatesController::class, 'getTimeSlotsperDay'])->name('user.getTimeSlots')->middleware('auth:sanctum');
 
 Route::post('/cancelar-reserva', [ManageBooking::class, 'cancelarReserva'])->name('cancelar.reserva');
+
+Route::get('tutors', [TutorsController::class, 'index'])->name('tutors.index');
+
+Route::get('tutors/{user}', [TutorsController::class, 'show'])->name('tutors.show');

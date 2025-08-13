@@ -200,7 +200,8 @@
                             </span>
                             @else
                             <span class="text-gray-700">
-                                {{ number_format($course->price->value, 2) }} USD
+                                {{ number_format($course->price->value, 2) }} USD ({{ number_format($course->price_mxn)
+                                }} MXN)
                             </span>
                             @endif
                         </p>

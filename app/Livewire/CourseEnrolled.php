@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\ExchangeRate;
 use CodersFree\Shoppingcart\Facades\Cart;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -9,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseEnrolled extends Component
 {
-
     public $course;
 
     public function addCart()
@@ -52,8 +52,6 @@ class CourseEnrolled extends Component
 
             Cart::store(Auth::id());
         }
-
-
     }
 
     public function buyNow()
@@ -65,7 +63,6 @@ class CourseEnrolled extends Component
 
         return redirect()->route('cart.index');
     }
-
 
     public function enrolled()
     {

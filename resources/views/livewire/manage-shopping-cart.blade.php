@@ -21,7 +21,7 @@
                                 Prof: {{ $item->options->teacher }}
                             </p>
                             <p class="font-semibold">
-                                {{ number_format($item->price, 2) }} USD
+                                {{ number_format($item->price, 2) }} USD ({{ number_format($item->price_mxn) }})
                             </p>
                         </div>
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Instructor\CourseController;
+use App\Http\Controllers\Instructor\InfoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,3 +23,5 @@ Route::get('courses/{course}/requirements', [CourseController::class, 'requireme
 Route::get('courses/{course}/curriculum', [CourseController::class, 'curriculum'])->name('courses.curriculum');
 
 Route::put('courses/{course}/status',  [CourseController::class, 'updateStatus'])->name('courses.update-status');
+
+Route::resource('info', InfoController::class);

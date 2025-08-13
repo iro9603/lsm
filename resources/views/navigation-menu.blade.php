@@ -6,9 +6,9 @@ $links = [
 'active' => request()->routeIs('courses.index')
 ],
 [
-'name' => 'Asesoría',
-'route' => route('asesoria'),
-'active' => request()->routeIs('asesoria')
+'name' => 'Tutores',
+'route' => route('tutors.index'),
+'active' => request()->routeIs('tutors.index')
 ],
 [
 'name' => 'Nosotros',

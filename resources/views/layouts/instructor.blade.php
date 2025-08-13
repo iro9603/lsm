@@ -26,10 +26,10 @@
 
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased flex flex-col min-h-screen">
     <x-banner />
 
-    <div class="min-h-screen bg-indigo-950">
+    <div class="flex flex-col flex-grow bg-gradient-to-b from-[#1a1440] to-[#2c235d] ">
         @include('layouts.includes.instructor.navigation-menu')
 
         <!-- Page Heading -->
@@ -42,7 +42,7 @@
         @endif
 
         <!-- Page Content -->
-        <main>
+        <main class="flex-grow">
             {{ $slot }}
         </main>
 
@@ -53,7 +53,7 @@
 
     @livewireScripts
 
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    <script id=" MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

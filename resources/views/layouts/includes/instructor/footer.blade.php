@@ -9,7 +9,8 @@
                     <span class="text-white font-bold text-xl">TuPlataforma</span>
                 </a>
                 <p class="text-sm text-slate-400 max-w-xs">Aprende sin límites, con cursos modernos y accesibles desde
-                    cualquier dispositivo.</p>
+                    cualquier
+                    dispositivo.</p>
             </div>
 
             <!-- Enlaces -->
@@ -44,12 +45,13 @@
         <div class="border-t border-slate-800 mb-6"></div>
 
         <!-- Sección inferior -->
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-400">
-            <p class="text-center">&copy; 2025 TuPlataforma. Todos los derechos reservados.</p>
+        <div class="flex flex-col  lg:flex-row justify-between items-center gap-4 text-sm text-slate-400">
+            <p class="text-center">&copy; 2025 Tuukul Academia. Todos los derechos reservados.</p>
             <div class="flex gap-5 justify-center">
+                <a href="https://www.facebook.com/academiaxahni/" class="hover:text-amber-400 transition"
+                    target="_blank"><i class="fab fa-facebook text-xl"></i></a>
                 <a href="#" class="hover:text-amber-400 transition"><i class="fab fa-discord text-xl"></i></a>
                 <a href="#" class="hover:text-amber-400 transition"><i class="fab fa-twitter text-xl"></i></a>
-                <a href="#" class="hover:text-amber-400 transition"><i class="fab fa-github text-xl"></i></a>
             </div>
         </div>
     </div>
