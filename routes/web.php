@@ -3,14 +3,17 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\ManageDatesController;
 use App\Http\Controllers\TutorsController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ManageBooking;
+use App\Http\Controllers\MessageController;
 use App\Http\Middleware\CheckCartItems;
 use App\Livewire\Asesoria;
+use App\Livewire\ChatComponent;
 use App\Livewire\Us;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +58,10 @@ Route::get('/calendar/{date}', [ManageDatesController::class, 'getTimeSlotsperDa
 
 Route::post('/cancelar-reserva', [ManageBooking::class, 'cancelarReserva'])->name('cancelar.reserva');
 
-Route::get('tutors', [TutorsController::class, 'index'])->name('tutors.index');
+Route::get('tutors', [TutorsController::class, 'index'])->middleware('auth')->name('tutors.index');
 
 Route::get('tutors/{user}', [TutorsController::class, 'show'])->name('tutors.show');
+Route::get('messages/{tutor_id}', [MessageController::class, 'index'])->name('message.index');
+Route::resource('contacts', ContactController::class)->middleware('auth');
+
+Route::get('chatroom', [ChatComponent::class, 'index'])->middleware('auth')->name('chatroom.index');

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.student>
     <x-container width="5xl" class="m-12">
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-white">Mis cursos</h2>
@@ -34,4 +34,4 @@
             @endforelse
         </ul>
     </x-container>
-</x-app-layout>
+</x-layouts.student>

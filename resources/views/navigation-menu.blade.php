@@ -14,21 +14,12 @@ $links = [
 'name' => 'Nosotros',
 'route' => route('nosotros'),
 'active' => request()->routeIs('nosotros')
-],
-[
-'name' => 'Mis cursos',
-'route' => route('courses.myCourses'),
-'active' => request()->routeIs('courses.myCourses')
-],
-[
-'name' => 'Mis clases',
-'route' => route('classes.myClasses'),
-'active' => request()->routeIs('classes.myClasses')
 ]
+
 ];
 @endphp
 
-<nav x-data="{ open: false }" class=" bg-indigo-950 shadow-md hover:bg-indigo-900">
+<nav x-data="{ open: false }" class=" bg-indigo-950 shadow-md ">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -118,6 +109,10 @@ $links = [
 
                             <x-dropdown-link href="{{ route('classes.myClasses') }}">
                                 Mis clases
+                            </x-dropdown-link>
+
+                            <x-dropdown-link href="{{ route('chatroom.index') }}">
+                                Mensajes
                             </x-dropdown-link>
 
                             @can('access_dashboard')
