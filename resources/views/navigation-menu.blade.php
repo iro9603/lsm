@@ -97,9 +97,11 @@ $links = [
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
+                            @if (!(Auth::user()->hasAnyRole(['instructor'])))
                             <x-dropdown-link href="{{ route('courses.myCourses') }}">
                                 Mis cursos
                             </x-dropdown-link>
+                            @endcan
 
                             @can('manage_courses')
                             <x-dropdown-link href="{{ route('instructor.courses.index') }}">
@@ -107,13 +109,17 @@ $links = [
                             </x-dropdown-link>
                             @endcan
 
+                            @if (!(Auth::user()->hasAnyRole(['instructor'])))
                             <x-dropdown-link href="{{ route('classes.myClasses') }}">
                                 Mis clases
                             </x-dropdown-link>
+                            @endif
 
+                            @if (!(Auth::user()->hasAnyRole(['instructor'])))
                             <x-dropdown-link href="{{ route('chatroom.index') }}">
                                 Mensajes
                             </x-dropdown-link>
+                            @endif
 
                             @can('access_dashboard')
                             <x-dropdown-link href="{{ route('admin.dashboard') }}">

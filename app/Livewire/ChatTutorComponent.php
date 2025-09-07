@@ -8,29 +8,23 @@ use App\Models\Chat;
 use App\Models\Contact;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
 use Illuminate\Support\Facades\Notification;
+use Livewire\Component;
 
-class ChatComponent extends Component
+class ChatTutorComponent extends Component
 {
     public $search;
 
     public $contactChat, $chat;
 
     public $bodyMessage, $users;
-
-    public $receiver;
-
     public $chat_id;
 
-
+    public $receiver;
     public function mount()
     {
         $this->users = collect();
     }
-
-
-    //Oyentes
 
     public function getListeners()
     {
@@ -43,6 +37,8 @@ class ChatComponent extends Component
             "echo-presence:chat.1,leaving" => 'chatLeaving',
         ];
     }
+
+
 
     public function getContactsProperty()
     {
@@ -68,7 +64,6 @@ class ChatComponent extends Component
         return Auth::user()->chats()->get()->sortByDesc('last_message_at');
     }
 
-
     public function getUsersNotificationsProperty()
     {
         return $this->chat ? $this->chat->users->where('id', '!=', Auth::id()) : collect();
@@ -87,7 +82,6 @@ class ChatComponent extends Component
             broadcast(new UserTyping($this->chat->id, $receiver_id));
         }
     }
-
 
     public function open_chat(Chat $chat)
     {
@@ -126,8 +120,14 @@ class ChatComponent extends Component
             'user_id' => Auth::user()->id
         ]);
 
-        $receiver = $this->chat->users->where('id', '!=', Auth::id())->first();
-        $receiver_id = $receiver->id;
+        if ($this->contactChat) {
+            $receiver_id = $this->contactChat->contact_id;
+        } else {
+            // Si el chat ya existe, obtener el otro usuario del chat
+            $receiver_id = $this->chat->users->where('id', '!=', Auth::id())->first()->id;
+        }
+
+
 
         broadcast(new MessageSent($receiver_id))->toOthers();
 
@@ -153,8 +153,9 @@ class ChatComponent extends Component
 
     public function index()
     {
-        return view('chatroom.index');
+        return view('instructor.chatroom.index');
     }
+
     public function render()
     {
         if ($this->chat) {

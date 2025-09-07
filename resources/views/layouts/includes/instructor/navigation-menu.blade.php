@@ -10,6 +10,12 @@ $links = [
 'route' => route('instructor.info.index'),
 'active' => request()->routeIs('instructor.info.index')
 ]
+,
+[
+'name' => 'Mensajes',
+'route' => route('instructor.chatroom.index'),
+'active' => request()->routeIs('instructor.chatroom.index')
+]
 
 ];
 @endphp

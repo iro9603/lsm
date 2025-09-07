@@ -16,8 +16,9 @@
                 @if ($this->chats->count() == 0 || $search)
                 <div class="px-4 py-3">
                     <h2 class="text-teal-600 text-lg mb-4">Contactos</h2>
-                    <ul class="space-y-4"> @forelse ($this->contacts as $contact) <li class="cursor-pointer"
-                            wire:click="open_chat_contact({{ $contact }})">
+                    <ul class="space-y-4">
+                        @forelse ($this->contacts as $contact)
+                        <li class="cursor-pointer" wire:click="open_chat_contact({{ $contact }})">
                             <div class="flex">
                                 <figure class="flex-shrink-0"> <img
                                         class="h-12 w-12 object-cover object-center rounded-full "
@@ -27,7 +28,10 @@
                                     <p class="text-gray-800"> {{ $contact->name }} </p>
                                 </div>
                             </div>
-                        </li> @empty @endforelse </ul>
+                        </li>
+                        @empty
+                        @endforelse
+                    </ul>
                 </div>
                 @else
                 @foreach ($this->chats as $chatItem) <div wire:key="chats-{{ $chatItem->id }}"
@@ -37,7 +41,7 @@
                             src="" alt="{{ $chatItem->name }}"> </figure>
                     <div class="w-[calc(100%-4rem)] py-4 border-b border-gray-200">
                         <div class="flex justify-between items-center">
-                            <p> {{ $chatItem->name}} </p>
+                            <p> {{ $chatItem->users->where('id', '!=', Auth::id())->first()->name }} </p>
                             <p class="text-xs"> {{ $chatItem->last_message_at->format('h:i:A') }} </p>
                         </div>
                         <p class="text-sm text-gray-700 mt-1 truncate">{{ $chatItem->messages->last()->body }}</p>
@@ -54,10 +58,12 @@
             <!-- header -->
             <div class="bg-gray-100 h-16 flex items-center px-3"> <button class="md:hidden mr-3 text-gray-700"
                     wire:click="closeChat"> <i class="fa fa-arrow-left"></i> </button>
-                <figure> @if ($chat) <img class="w-10 h-10 rounded-full object-cover object-center"
-                        src="{{ $chat->image }}" alt="{{ $chat->name }}"> @else <img
-                        class="w-10 h-10 rounded-full object-cover object-center"
-                        src="{{ $contactChat->user->profile_photo_url }}" alt="{{ $contactChat->name }}"> @endif
+                <figure>
+                    @if ($chat) <img class="w-10 h-10 rounded-full object-cover object-center" src="{{ $chat->image }}"
+                        alt="{{ $chat->name }}">
+                    @else <img class="w-10 h-10 rounded-full object-cover object-center"
+                        src="{{ $contactChat->user->profile_photo_url }}" alt="{{ $contactChat->name }}">
+                    @endif
                 </figure>
                 <div class="ml-4">
                     <p class="text-gray-800">
@@ -67,6 +73,7 @@
                         {{ $contactChat->user->name }}
                         @endif
                     </p>
+
                     <p class="text-gray-600 text-xs" x-show="chat_id === typingChatId">
                         Escribiendo...
                     </p>
@@ -97,9 +104,7 @@
                         </div>
                     </div>
                     @endforeach
-
                     <span id="final"></span>
-
                 </div>
             </div> <!-- input fijo abajo -->
             <form wire:submit.prevent="sendMessage" class="bg-gray-100 h-16 flex items-center px-4 flex-shrink-0">
@@ -139,7 +144,6 @@
                 }
             }
         }
-
         Livewire.on('scrollIntoView', function(){
 
             setTimeout(() => {
@@ -158,9 +162,10 @@
                 }
 
             }, 5); 
+
+
+       
         });
-
-
     </script>
     @endpush
 </div>
