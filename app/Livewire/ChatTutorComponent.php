@@ -86,7 +86,10 @@ class ChatTutorComponent extends Component
     public function open_chat(Chat $chat)
     {
         $this->chat = $chat;
-        $this->chat_id = $this->chat->id;
+        $this->chat_id = $chat->id;
+
+        $this->markUnreadMessagesAsRead($this->chat);
+
         $this->reset('contactChat', 'bodyMessage');
     }
 
@@ -98,6 +101,9 @@ class ChatTutorComponent extends Component
         if ($chat) {
             $this->chat = $chat;
             $this->chat_id = $this->chat->id;
+
+            $this->markUnreadMessagesAsRead($this->chat);
+
             $this->reset('contactChat', 'bodyMessage', 'search');
         } else {
             $this->contactChat = $contact;
@@ -161,6 +167,10 @@ class ChatTutorComponent extends Component
         if ($this->chat) {
             $this->dispatch('scrollIntoView');
         }
+        if ($this->chat) {
+            $this->markUnreadMessagesAsRead($this->chat);
+        }
+
         return view('livewire.chat-component');
     }
 
@@ -168,5 +178,26 @@ class ChatTutorComponent extends Component
     {
         $this->chat = null;
         $this->contactChat = null;
+    }
+
+    protected function markUnreadMessagesAsRead(?Chat $chat): void
+    {
+        if (!$chat) {
+            return;
+        }
+
+        $chat->loadMissing('users');
+
+        $updated = $chat->messages()
+            ->where('user_id', '!=', Auth::id())
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
+        if ($updated > 0) {
+            $receiver = $chat->users->where('id', '!=', Auth::id())->first();
+            if ($receiver) {
+                broadcast(new MessageSent($receiver->id))->toOthers();
+            }
+        }
     }
 }

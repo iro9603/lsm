@@ -45,6 +45,13 @@ class Chat extends Model
         });
     }
 
+    public function unreadMessages(): Attribute
+    {
+        return new Attribute(get: function () {
+            return $this->messages()->where('user_id', '!=', Auth::id())->where('is_read', false)->count();
+        });
+    }
+
     public function messages()
     {
         return $this->hasMany(Message::class);

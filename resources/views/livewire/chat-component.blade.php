@@ -33,14 +33,30 @@
                 @foreach ($this->chats as $chatItem) <div wire:key="chats-{{ $chatItem->id }}"
                     wire:click="open_chat({{ $chatItem }})"
                     class="flex items-center justify-between {{ $chat && $chatItem->id == $chat->id ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200 cursor-pointer px-3">
-                    <figure> <img src="{{ $chatItem->image }}" class="h-12 w-12 object-cover object-center rounded-full"
-                            src="" alt="{{ $chatItem->name }}"> </figure>
+                    <figure>
+                        <img src="{{ $chatItem->image }}" class="h-12 w-12 object-cover object-center rounded-full"
+                            src="" alt="{{ $chatItem->name }}">
+                    </figure>
                     <div class="w-[calc(100%-4rem)] py-4 border-b border-gray-200">
                         <div class="flex justify-between items-center">
-                            <p> {{ $chatItem->name}} </p>
-                            <p class="text-xs"> {{ $chatItem->last_message_at->format('h:i:A') }} </p>
+                            <div>
+                                <p> {{ $chatItem->name}} </p>
+                                <p class="text-sm text-gray-700 mt-1 truncate">{{ $chatItem->messages->last()->body }}
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs "> {{ $chatItem->last_message_at->format('h:i:A') }}
+
+                                </p>
+
+                                @if ($chatItem->unread_messages)
+                                <span
+                                    class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-green-100 bg-green-600 rounded-full">
+                                    {{$chatItem->unread_messages }}
+                                </span>
+                                @endif
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-700 mt-1 truncate">{{ $chatItem->messages->last()->body }}</p>
                     </div>
                 </div>
                 @endforeach
@@ -54,10 +70,11 @@
             <!-- header -->
             <div class="bg-gray-100 h-16 flex items-center px-3"> <button class="md:hidden mr-3 text-gray-700"
                     wire:click="closeChat"> <i class="fa fa-arrow-left"></i> </button>
-                <figure> @if ($chat) <img class="w-10 h-10 rounded-full object-cover object-center"
-                        src="{{ $chat->image }}" alt="{{ $chat->name }}"> @else <img
-                        class="w-10 h-10 rounded-full object-cover object-center"
-                        src="{{ $contactChat->user->profile_photo_url }}" alt="{{ $contactChat->name }}"> @endif
+                <figure>
+                    @if ($chat) <img class="w-10 h-10 rounded-full object-cover object-center" src="{{ $chat->image }}"
+                        alt="{{ $chat->name }}"> @else <img class="w-10 h-10 rounded-full object-cover object-center"
+                        src="{{ $contactChat->user->profile_photo_url }}" alt="{{ $contactChat->name }}">
+                    @endif
                 </figure>
                 <div class="ml-4">
                     <p class="text-gray-800">
@@ -93,7 +110,13 @@
                             <p class="text-sm">{{ $message->body }}</p>
                             <p
                                 class="text-xs text-gray-600 mt-1 {{ $message->user_id == Auth::id() ? 'text-right' : '' }}">
-                                {{ $message->created_at->format('d:m:y h:i:A') }} </p>
+                                {{ $message->created_at->format('d:m:y h:i:A') }}
+                                @if ($message->user_id == Auth::id())
+                                <i
+                                    class="fas fa-check-double ml-2 {{ $message->is_read ? 'text-blue-500' : 'text-gray-600' }}">
+                                </i>
+                                @endif
+                            </p>
                         </div>
                     </div>
                     @endforeach
